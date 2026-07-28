@@ -180,6 +180,23 @@
   }
   .card h3{font-size:1.05rem;margin-bottom:8px}
   .card p{color:var(--muted);font-size:.92rem}
+  /* Video cards */
+  .video-card{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:var(--radius);overflow:hidden;
+  }
+  .video-card video{
+    display:block;width:100%;aspect-ratio:16/9;
+    object-fit:cover;background:#000;
+  }
+  .vc-body{padding:14px 16px}
+  .vc-body h3{font-size:.98rem;margin-bottom:4px}
+  .vc-body p{color:var(--muted);font-size:.86rem}
+  .vc-tag{
+    display:inline-block;font-size:.72rem;font-weight:600;
+    padding:2px 8px;border-radius:999px;margin-bottom:8px;
+    background:rgba(45,212,191,.12);color:var(--accent);
+  }
   .step-num{
     display:inline-flex;align-items:center;justify-content:center;
     width:32px;height:32px;border-radius:50%;
@@ -421,6 +438,63 @@
         <div class="card"><h3>🎯 Escolha uma tarefa</h3><p>São 84 tarefas: cozinha, lavanderia, organização e serviços diversos. Veja a lista completa traduzida na aba Tarefas.</p></div>
         <div class="card"><h3>🎥 Grave o vídeo</h3><p>Posicione o celular, siga as instruções da tarefa e grave. As gravações passam por revisão antes de serem aprovadas.</p></div>
         <div class="card"><h3>💵 Receba por hora</h3><p>Cada hora de gravação aprovada gera pagamento. Indicando amigos, você também ganha comissão recorrente.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="exemplos">
+    <div class="container">
+      <h2 class="section-title">Exemplos de gravação</h2>
+      <p class="section-sub">Clipes no formato que o app espera: câmera na altura dos olhos, mãos sempre no enquadramento e a tarefa do início ao fim. Os vídeos não têm áudio e rodam em silêncio.</p>
+      <div class="grid grid-3">
+        <figure class="video-card">
+          <video src="/videos/lavar-louca.mp4" poster="/videos/lavar-louca.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Cozinha</span>
+            <h3>Lavar louça</h3>
+            <p>Pia inteira no quadro, as duas mãos visíveis do começo ao fim.</p>
+          </figcaption>
+        </figure>
+        <figure class="video-card">
+          <video src="/videos/alimentar-pet.mp4" poster="/videos/alimentar-pet.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Cuidados com pet</span>
+            <h3>Servir comida para o pet</h3>
+            <p>Tarefa com deslocamento: pegar a ração, encher o pote e levar até o animal.</p>
+          </figcaption>
+        </figure>
+        <figure class="video-card">
+          <video src="/videos/varrer-area.mp4" poster="/videos/varrer-area.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Limpeza</span>
+            <h3>Varrer área externa</h3>
+            <p>Movimento repetido e contínuo, sem cortes no meio da tarefa.</p>
+          </figcaption>
+        </figure>
+        <figure class="video-card">
+          <video src="/videos/separar-roupa.mp4" poster="/videos/separar-roupa.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Lavanderia</span>
+            <h3>Separar roupa</h3>
+            <p>Cesto e cama enquadrados juntos — o robô precisa ver origem e destino.</p>
+          </figcaption>
+        </figure>
+        <figure class="video-card">
+          <video src="/videos/varrer-chao.mp4" poster="/videos/varrer-chao.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Limpeza</span>
+            <h3>Varrer com pá</h3>
+            <p>Inclui recolher embaixo do móvel: os cantos difíceis contam.</p>
+          </figcaption>
+        </figure>
+        <figure class="video-card">
+          <video src="/videos/lavar-louca-2.mp4" poster="/videos/lavar-louca-2.jpg" muted loop playsinline preload="none" disablepictureinpicture></video>
+          <figcaption class="vc-body">
+            <span class="vc-tag">Cozinha</span>
+            <h3>Louça item por item</h3>
+            <p>Mesma tarefa em outra cozinha — variação de ambiente é o que dá valor.</p>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -779,6 +853,39 @@ document.addEventListener('click', e => {
     gtag('event', 'whatsapp_click', {link_url: a.href});
   }
 });
+</script>
+<script>
+// Vídeos de exemplo: só carregam e tocam quando entram na tela.
+// preload="none" no HTML garante que nada é baixado antes disso.
+(function(){
+  var vids = document.querySelectorAll('#exemplos video');
+  if(!vids.length) return;
+
+  // Quem pediu menos movimento recebe controles em vez de autoplay.
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    vids.forEach(function(v){ v.controls = true; v.preload = 'metadata'; });
+    return;
+  }
+  if(!('IntersectionObserver' in window)){
+    vids.forEach(function(v){ v.controls = true; });
+    return;
+  }
+
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if(e.isIntersecting){
+        var p = v.play();
+        // Safari/iOS em modo economia de bateria recusa o play: cai para controles.
+        if(p && p.catch) p.catch(function(){ v.controls = true; });
+      } else {
+        v.pause();
+      }
+    });
+  }, {threshold: 0.4});
+
+  vids.forEach(function(v){ io.observe(v); });
+})();
 </script>
 </body>
 </html>
