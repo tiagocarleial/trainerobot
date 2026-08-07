@@ -9,6 +9,10 @@
 <meta name="google-site-verification" content="o_W1tzysyvvNi3UUKV4TGzZxmFBi8W42aE05l4j86Rs">
 <meta name="msvalidate.01" content="E816E0B595A25B9D365E2E5BBDCE60E9">
 <link rel="canonical" href="https://trainerobot.vercel.app/">
+<link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en">
+<link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es">
+<link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -18,6 +22,8 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://trainerobot.vercel.app/">
 <meta property="og:locale" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
 <meta property="og:site_name" content="TraineRobot">
 <meta property="og:image" content="https://trainerobot.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -85,273 +91,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-WC63WTTXZD');
+  gtag('config', 'G-WC63WTTXZD', {page_language: 'pt-BR'});
   gtag('config', 'AW-945891303');
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0b0f14;
-    --bg-soft:#111823;
-    --card:#151d29;
-    --border:#243244;
-    --text:#e6edf5;
-    --muted:#93a4b8;
-    --accent:#2dd4bf;
-    --accent-strong:#14b8a6;
-    --money:#fbbf24;
-    --radius:14px;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'Inter',system-ui,sans-serif;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.brand{font-family:'Space Grotesk',sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  .container{max-width:1080px;margin:0 auto;padding:0 20px}
-
-  /* Header */
-  header{
-    position:sticky;top:0;z-index:50;
-    background:rgba(11,15,20,.85);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .brand{font-weight:700;font-size:1.25rem;letter-spacing:.5px;color:var(--text);display:flex;align-items:center;gap:8px}
-  .brand .bot{color:var(--accent)}
-  .tabs{display:flex;gap:4px}
-  .tab-btn{
-    background:none;border:none;color:var(--muted);
-    font:inherit;font-weight:500;font-size:.95rem;
-    padding:8px 16px;border-radius:999px;cursor:pointer;
-    transition:all .2s;
-  }
-  .tab-btn:hover{color:var(--text)}
-  .tab-btn.active{background:var(--card);color:var(--accent);border:1px solid var(--border)}
-
-  /* Panels */
-  .panel{display:none;animation:fade .25s ease}
-  .panel.active{display:block}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-  /* Hero */
-  .hero{padding:72px 0 56px;text-align:center;position:relative;overflow:hidden}
-  .hero::before{
-    content:"";position:absolute;inset:0;
-    background:radial-gradient(600px 300px at 50% 0%, rgba(45,212,191,.12), transparent 70%);
-    pointer-events:none;
-  }
-  .hero h1{font-size:clamp(1.9rem,4.5vw,3.1rem);line-height:1.15;max-width:820px;margin:0 auto 20px}
-  .hero h1 .hl{color:var(--accent)}
-  .hero p{color:var(--muted);max-width:640px;margin:0 auto 32px;font-size:1.1rem}
-  .cta{
-    display:inline-block;
-    background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-    color:#04231f;font-weight:700;font-size:1.05rem;
-    padding:14px 34px;border-radius:999px;
-    transition:transform .15s, box-shadow .15s;
-    box-shadow:0 4px 24px rgba(45,212,191,.25);
-  }
-  .cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(45,212,191,.35)}
-  .cta.secondary{
-    background:var(--card);color:var(--text);
-    border:1px solid var(--border);box-shadow:none;
-  }
-  .disclosure{font-size:.8rem;color:var(--muted);margin-top:14px}
-
-  /* Sections */
-  section{padding:48px 0}
-  .section-title{font-size:1.6rem;margin-bottom:8px}
-  .section-sub{color:var(--muted);margin-bottom:32px;max-width:640px}
-  .grid{display:grid;gap:16px}
-  .grid-3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-  .grid-4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-  .card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:22px;
-  }
-  .card h3{font-size:1.05rem;margin-bottom:8px}
-  .card p{color:var(--muted);font-size:.92rem}
-  /* Video cards */
-  .video-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);overflow:hidden;
-  }
-  .video-card video{
-    display:block;width:100%;aspect-ratio:16/9;
-    object-fit:cover;background:#000;
-  }
-  .vc-body{padding:14px 16px}
-  .vc-body h3{font-size:.98rem;margin-bottom:4px}
-  .vc-body p{color:var(--muted);font-size:.86rem}
-  .vc-tag{
-    display:inline-block;font-size:.72rem;font-weight:600;
-    padding:2px 8px;border-radius:999px;margin-bottom:8px;
-    background:rgba(45,212,191,.12);color:var(--accent);
-  }
-  .step-num{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:32px;height:32px;border-radius:50%;
-    background:rgba(45,212,191,.12);color:var(--accent);
-    font-weight:700;margin-bottom:12px;font-family:'Space Grotesk';
-    flex-shrink:0;
-  }
-  .steps{
-    display:grid;gap:14px;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  }
-  .step{
-    display:flex;flex-direction:column;gap:0;
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:22px;
-  }
-  .step h3{font-size:1rem;margin-bottom:6px}
-  .step p{color:var(--muted);font-size:.9rem}
-
-  /* Stats */
-  .stats{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin:40px 0 8px}
-  .stat{
-    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    padding:18px 28px;text-align:center;min-width:160px;
-  }
-  .stat .num{font-family:'Space Grotesk';font-size:1.6rem;font-weight:700;color:var(--money)}
-  .stat .lbl{font-size:.82rem;color:var(--muted)}
-
-  /* FAQ */
-  details{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);margin-bottom:12px;overflow:hidden;
-  }
-  summary{
-    padding:16px 20px;cursor:pointer;font-weight:600;list-style:none;
-    display:flex;justify-content:space-between;align-items:center;
-  }
-  summary::after{content:"+";color:var(--accent);font-size:1.3rem;font-weight:400}
-  details[open] summary::after{content:"–"}
-  details .answer{padding:0 20px 18px;color:var(--muted);font-size:.94rem}
-
-  /* Tasks */
-  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
-  .chip{
-    background:var(--card);border:1px solid var(--border);color:var(--muted);
-    font:inherit;font-size:.88rem;font-weight:500;
-    padding:7px 16px;border-radius:999px;cursor:pointer;transition:all .15s;
-  }
-  .chip:hover{color:var(--text)}
-  .chip.active{background:rgba(45,212,191,.12);color:var(--accent);border-color:var(--accent-strong)}
-  .search{
-    width:100%;max-width:420px;
-    background:var(--card);border:1px solid var(--border);border-radius:999px;
-    color:var(--text);font:inherit;font-size:.95rem;
-    padding:11px 20px;margin-bottom:20px;outline:none;
-  }
-  .search:focus{border-color:var(--accent-strong)}
-  .search::placeholder{color:var(--muted)}
-  .task-count{color:var(--muted);font-size:.85rem;margin-bottom:16px}
-  .task-list{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
-  .task{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:12px;padding:14px 18px;
-  }
-  .task .en{font-weight:600;font-size:.95rem}
-  .task .pt{color:var(--muted);font-size:.88rem;margin-top:2px}
-  .task .cat{
-    display:inline-block;margin-top:8px;font-size:.72rem;font-weight:600;
-    padding:2px 10px;border-radius:999px;letter-spacing:.3px;
-  }
-  .cat-kitchen{background:rgba(251,191,36,.12);color:#fbbf24}
-  .cat-laundry{background:rgba(96,165,250,.12);color:#60a5fa}
-  .cat-tidy{background:rgba(45,212,191,.12);color:#2dd4bf}
-  .cat-misc{background:rgba(192,132,252,.12);color:#c084fc}
-  .no-results{color:var(--muted);text-align:center;padding:32px 0}
-  [hidden]{display:none!important}
-
-  /* Referral */
-  .levels{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:40px}
-  .level-card{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:26px;text-align:center;
-  }
-  .level-card .val{font-family:'Space Grotesk';font-size:2rem;font-weight:700;color:var(--money)}
-  .level-card .per{color:var(--muted);font-size:.85rem}
-  .level-card h3{margin-bottom:6px}
-  .calc{
-    background:var(--card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:28px;max-width:560px;margin:0 auto 40px;
-  }
-  .calc h3{margin-bottom:18px}
-  .calc label{display:block;font-size:.88rem;color:var(--muted);margin-bottom:6px}
-  .calc input[type=range]{width:100%;accent-color:var(--accent);margin-bottom:4px}
-  .calc .row{margin-bottom:18px}
-  .calc .val-lbl{font-weight:600;color:var(--text)}
-  .calc-result{
-    text-align:center;background:rgba(251,191,36,.08);
-    border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:18px;margin-top:8px;
-  }
-  .calc-result .total{font-family:'Space Grotesk';font-size:2.2rem;font-weight:700;color:var(--money)}
-  .calc-result .lbl{color:var(--muted);font-size:.85rem}
-  .calc-note{font-size:.75rem;color:var(--muted);margin-top:10px;text-align:center}
-
-  .link-box{
-    display:flex;gap:10px;max-width:560px;margin:0 auto;flex-wrap:wrap;justify-content:center;
-  }
-  .link-box input{
-    flex:1;min-width:240px;
-    background:var(--bg-soft);border:1px solid var(--border);border-radius:10px;
-    color:var(--text);font:inherit;font-size:.9rem;padding:12px 16px;outline:none;
-  }
-  .copy-btn{
-    background:var(--accent);border:none;color:#04231f;font:inherit;font-weight:700;
-    padding:12px 22px;border-radius:10px;cursor:pointer;transition:background .15s;
-  }
-  .copy-btn:hover{background:var(--accent-strong)}
-
-  footer{
-    border-top:1px solid var(--border);padding:32px 0;margin-top:40px;
-    text-align:center;color:var(--muted);font-size:.82rem;
-  }
-  footer p{max-width:720px;margin:0 auto 8px}
-
-  /* Device list */
-  .dev-os{
-    font-size:.68rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
-    color:var(--muted);margin-left:6px;
-  }
-  .dev-list{list-style:none;margin-top:10px}
-  .dev-list li{
-    color:var(--muted);font-size:.9rem;padding:5px 0 5px 24px;position:relative;
-  }
-  .dev-list li::before{
-    content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700;
-  }
-
-  /* WhatsApp floating button */
-  .wa-float{
-    position:fixed;bottom:22px;right:22px;z-index:60;
-    display:flex;align-items:center;gap:8px;
-    background:#25d366;color:#062b16;font-weight:700;font-size:.92rem;
-    padding:12px 18px;border-radius:999px;
-    box-shadow:0 6px 24px rgba(37,211,102,.4);
-    transition:transform .15s;
-  }
-  .wa-float:hover{transform:translateY(-2px)}
-  .wa-float svg{width:20px;height:20px;fill:#062b16}
-
-  @media(max-width:640px){
-    .nav{height:auto;padding:12px 0;flex-direction:column;gap:10px}
-    .hero{padding:48px 0 40px}
-    .wa-float span{display:none}
-    .wa-float{padding:14px}
-  }
-</style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 
@@ -363,6 +109,11 @@
       <button class="tab-btn" data-tab="tarefas">Tarefas</button>
       <button class="tab-btn" data-tab="indicacoes">Indicações</button>
     </nav>
+    <div class="lang-switch">
+      <a href="/" hreflang="pt-BR" lang="pt-BR" aria-current="true">PT</a>
+      <a href="/en" hreflang="en" lang="en">EN</a>
+      <a href="/es" hreflang="es" lang="es">ES</a>
+    </div>
   </div>
 </header>
 
@@ -442,7 +193,7 @@
     </div>
   </section>
 
-  <section id="exemplos">
+  <section id="exemplos" data-videos>
     <div class="container">
       <h2 class="section-title">Exemplos de gravação</h2>
       <p class="section-sub">Clipes no formato que o app espera: câmera na altura dos olhos, mãos sempre no enquadramento e a tarefa do início ao fim. Os vídeos não têm áudio e rodam em silêncio.</p>
@@ -601,90 +352,90 @@
       </div>
       <div class="task-count" id="task-count">84 tarefas</div>
       <div class="task-list" id="task-list">
-        <div class="task" data-cat="kitchen" data-s="baking – knead/roll/cut dough assar – sovar/abrir/cortar massa"><div class="en">Baking – knead/roll/cut dough</div><div class="pt">Assar – sovar/abrir/cortar massa</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="brew coffee / beverage station reset preparar café / reorganizar estação de bebidas"><div class="en">Brew Coffee / Beverage Station Reset</div><div class="pt">Preparar café / reorganizar estação de bebidas</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="build a sandwich/salad/plate a dish montar sanduíche/salada/empratar"><div class="en">Build a sandwich/salad/plate a dish</div><div class="pt">Montar sanduíche/salada/empratar</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="cleaning dishes in sink lavar louça na pia"><div class="en">Cleaning Dishes in Sink</div><div class="pt">Lavar louça na pia</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="fridge &amp; pantry audit auditoria da geladeira e despensa"><div class="en">Fridge &amp; Pantry Audit</div><div class="pt">Auditoria da geladeira e despensa</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="kitchen deep clean limpeza profunda da cozinha"><div class="en">Kitchen Deep Clean</div><div class="pt">Limpeza profunda da cozinha</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="loading dishwasher carregar a lava-louças"><div class="en">Loading Dishwasher</div><div class="pt">Carregar a lava-louças</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="set the table pôr a mesa"><div class="en">Set the Table</div><div class="pt">Pôr a mesa</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="setting the table arrumar a mesa"><div class="en">Setting the Table</div><div class="pt">Arrumar a mesa</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="unloading dishwasher and putting dishes away descarregar a lava-louças e guardar a louça"><div class="en">Unloading Dishwasher and Putting Dishes Away</div><div class="pt">Descarregar a lava-louças e guardar a louça</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="food prep – wash/peel/chop produce preparo de alimentos – lavar/descascar/picar"><div class="en">Food Prep – wash/peel/chop produce</div><div class="pt">Preparo de alimentos – lavar/descascar/picar</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="kitchen" data-s="wipe kitchen surfaces limpar superfícies da cozinha"><div class="en">Wipe Kitchen Surfaces</div><div class="pt">Limpar superfícies da cozinha</div><span class="cat cat-kitchen">Cozinha</span></div>
-        <div class="task" data-cat="laundry" data-s="collecting clothes into a hamper juntar roupas no cesto"><div class="en">Collecting Clothes Into a Hamper</div><div class="pt">Juntar roupas no cesto</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="duvet into cover / change sheets / make bed colocar edredom na capa / trocar lençóis / fazer a cama"><div class="en">Duvet into cover / change sheets / make bed</div><div class="pt">Colocar edredom na capa / trocar lençóis / fazer a cama</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="folding clothes and putting them away dobrar roupas e guardar"><div class="en">Folding clothes and putting them away</div><div class="pt">Dobrar roupas e guardar</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="hanging clothes on hangers pendurar roupas em cabides"><div class="en">Hanging clothes on hangers</div><div class="pt">Pendurar roupas em cabides</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="ironing &amp; steaming passar roupa e vaporizar"><div class="en">Ironing &amp; Steaming</div><div class="pt">Passar roupa e vaporizar</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="loading the laundry machine carregar a máquina de lavar"><div class="en">Loading the Laundry Machine</div><div class="pt">Carregar a máquina de lavar</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="stain treatment &amp; hand-wash tratamento de manchas e lavagem à mão"><div class="en">Stain Treatment &amp; Hand-Wash</div><div class="pt">Tratamento de manchas e lavagem à mão</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="laundry" data-s="unloading the laundry machine into a hamper retirar da máquina para o cesto"><div class="en">Unloading the Laundry Machine Into a Hamper</div><div class="pt">Retirar da máquina para o cesto</div><span class="cat cat-laundry">Lavanderia</span></div>
-        <div class="task" data-cat="tidy" data-s="car wash &amp; detail lavar e detalhar o carro"><div class="en">Car Wash &amp; Detail</div><div class="pt">Lavar e detalhar o carro</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="clean the bathroom limpar o banheiro"><div class="en">Clean the Bathroom</div><div class="pt">Limpar o banheiro</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="cleaning out car limpar o carro por dentro"><div class="en">Cleaning Out Car</div><div class="pt">Limpar o carro por dentro</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="deep clean appliances limpeza profunda de eletrodomésticos"><div class="en">Deep Clean Appliances</div><div class="pt">Limpeza profunda de eletrodomésticos</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="desk tidy &amp; cable management organização da mesa e dos cabos"><div class="en">Desk Tidy &amp; Cable Management</div><div class="pt">Organização da mesa e dos cabos</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="device dusting &amp; screen cleaning tirar pó de aparelhos e limpar telas"><div class="en">Device Dusting &amp; Screen Cleaning</div><div class="pt">Tirar pó de aparelhos e limpar telas</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="filing &amp; shredding arquivar e triturar documentos"><div class="en">Filing &amp; Shredding</div><div class="pt">Arquivar e triturar documentos</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="labeling &amp; inventorying boxes etiquetagem e inventário de caixas"><div class="en">Labeling &amp; Inventorying Boxes</div><div class="pt">Etiquetagem e inventário de caixas</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="leaf raking &amp; bagging juntar folhas e ensacar"><div class="en">Leaf Raking &amp; Bagging</div><div class="pt">Juntar folhas e ensacar</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="mail &amp; package sorting triagem de correspondência e encomendas"><div class="en">Mail &amp; Package Sorting</div><div class="pt">Triagem de correspondência e encomendas</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="organize a junk drawer organizar a gaveta da bagunça"><div class="en">Organize a Junk Drawer</div><div class="pt">Organizar a gaveta da bagunça</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="organize the garage organizar a garagem"><div class="en">Organize the Garage</div><div class="pt">Organizar a garagem</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="pack a room for moving empacotar um cômodo para mudança"><div class="en">Pack a Room for Moving</div><div class="pt">Empacotar um cômodo para mudança</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="party setup &amp; takedown preparação e desmontagem de festa"><div class="en">Party Setup &amp; Takedown</div><div class="pt">Preparação e desmontagem de festa</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="patio / balcony furniture arrangement arranjo de móveis de varanda / sacada"><div class="en">Patio / balcony furniture arrangement</div><div class="pt">Arranjo de móveis de varanda / sacada</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="pool cleaning (skim surface) limpeza da piscina (retirar da superfície)"><div class="en">Pool cleaning (skim surface)</div><div class="pt">Limpeza da piscina (retirar da superfície)</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="post-party cleanup limpeza pós-festa"><div class="en">Post-Party Cleanup</div><div class="pt">Limpeza pós-festa</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="pull weeds by hand / hand fork arrancar ervas daninhas à mão / com garfo manual"><div class="en">Pull weeds by hand / hand fork</div><div class="pt">Arrancar ervas daninhas à mão / com garfo manual</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="rearrange wardrobe reorganizar o guarda-roupa"><div class="en">Rearrange Wardrobe</div><div class="pt">Reorganizar o guarda-roupa</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="replace wiper blades trocar palhetas do limpador de para-brisa"><div class="en">Replace wiper blades</div><div class="pt">Trocar palhetas do limpador de para-brisa</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="restock office supplies reabastecer material de escritório"><div class="en">Restock Office Supplies</div><div class="pt">Reabastecer material de escritório</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="scoop a litter box (clean litter) limpar a caixa de areia (higienizar)"><div class="en">Scoop a litter box (clean litter)</div><div class="pt">Limpar a caixa de areia (higienizar)</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="shelve books by size / color organizar livros por tamanho / cor"><div class="en">Shelve books by size / color</div><div class="pt">Organizar livros por tamanho / cor</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="sort hardware into divided tray organizar ferragens em bandeja com divisórias"><div class="en">Sort hardware into divided tray</div><div class="pt">Organizar ferragens em bandeja com divisórias</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="sort recycling into bins separar recicláveis em lixeiras"><div class="en">Sort recycling into bins</div><div class="pt">Separar recicláveis em lixeiras</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="sweep the porch / patio / deck varrer a varanda / pátio / deck"><div class="en">Sweep the porch / patio / deck</div><div class="pt">Varrer a varanda / pátio / deck</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="sweeping / vacuuming varrer / aspirar"><div class="en">Sweeping / vacuuming</div><div class="pt">Varrer / aspirar</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="tidying a single room arrumar um único cômodo"><div class="en">Tidying a Single Room</div><div class="pt">Arrumar um único cômodo</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="toy pickup &amp; organization recolher e organizar brinquedos"><div class="en">Toy Pickup &amp; Organization</div><div class="pt">Recolher e organizar brinquedos</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="trim a hedge / prune shrubs (hand shears) aparar cerca-viva / podar arbustos (tesouras manuais)"><div class="en">Trim a hedge / prune shrubs (hand shears)</div><div class="pt">Aparar cerca-viva / podar arbustos (tesouras manuais)</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="tidy" data-s="unpack &amp; set up a room desembalar e montar um cômodo"><div class="en">Unpack &amp; Set Up a Room</div><div class="pt">Desembalar e montar um cômodo</div><span class="cat cat-tidy">Organização</span></div>
-        <div class="task" data-cat="misc" data-s="bar / drink station setup montagem de bar / estação de bebidas"><div class="en">Bar / Drink Station Setup</div><div class="pt">Montagem de bar / estação de bebidas</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="caulking &amp; weatherproofing vedação e isolamento contra intempéries"><div class="en">Caulking &amp; Weatherproofing</div><div class="pt">Vedação e isolamento contra intempéries</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="change a tire (jack) trocar um pneu (macaco)"><div class="en">Change a tire (jack)</div><div class="pt">Trocar um pneu (macaco)</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="changing light bulbs &amp; batteries trocar lâmpadas e pilhas"><div class="en">Changing Light Bulbs &amp; Batteries</div><div class="pt">Trocar lâmpadas e pilhas</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="check &amp; add engine oil (cool engine) verificar e completar óleo do motor (motor frio)"><div class="en">Check &amp; add engine oil (cool engine)</div><div class="pt">Verificar e completar óleo do motor (motor frio)</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="check tire pressure &amp; add air verificar pressão dos pneus e encher"><div class="en">Check tire pressure &amp; add air</div><div class="pt">Verificar pressão dos pneus e encher</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="drill into real workpiece furar peça real"><div class="en">Drill into real workpiece</div><div class="pt">Furar peça real</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="full yard maintenance manutenção completa do quintal"><div class="en">Full Yard Maintenance</div><div class="pt">Manutenção completa do quintal</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="furniture assembly montagem de móveis"><div class="en">Furniture Assembly</div><div class="pt">Montagem de móveis</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="furniture disassembly desmontagem de móveis"><div class="en">Furniture Disassembly</div><div class="pt">Desmontagem de móveis</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="gardening jardinagem"><div class="en">Gardening</div><div class="pt">Jardinagem</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="hand-sand a surface lixar uma superfície à mão"><div class="en">Hand-sand a surface</div><div class="pt">Lixar uma superfície à mão</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="hang art &amp; mirrors pendurar quadros e espelhos"><div class="en">Hang Art &amp; Mirrors</div><div class="pt">Pendurar quadros e espelhos</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="hang curtains on a rod (rings/hooks) pendurar cortinas em varão (argolas/ganchos)"><div class="en">Hang curtains on a rod (rings/hooks)</div><div class="pt">Pendurar cortinas em varão (argolas/ganchos)</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="holiday decoration setup montagem de decoração de festas"><div class="en">Holiday Decoration Setup</div><div class="pt">Montagem de decoração de festas</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="loading the car for a road trip carregar o carro para uma viagem"><div class="en">Loading the Car for a Road Trip</div><div class="pt">Carregar o carro para uma viagem</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="packing a suitcase fazer uma mala"><div class="en">Packing a Suitcase</div><div class="pt">Fazer uma mala</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="patch &amp; paint walls reparar e pintar paredes"><div class="en">Patch &amp; Paint Walls</div><div class="pt">Reparar e pintar paredes</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="pet care routine rotina de cuidados com pet"><div class="en">Pet Care Routine</div><div class="pt">Rotina de cuidados com pet</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="pet feeding &amp; water refresh alimentação e troca de água do pet"><div class="en">Pet Feeding &amp; Water Refresh</div><div class="pt">Alimentação e troca de água do pet</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="pet grooming &amp; bath banho e tosa do pet"><div class="en">Pet Grooming &amp; Bath</div><div class="pt">Banho e tosa do pet</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="plunge / snake a drain desentupir um ralo (desentupidor/mangueira)"><div class="en">Plunge / snake a drain</div><div class="pt">Desentupir um ralo (desentupidor/mangueira)</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="pressure-wash patio / driveway lavar varanda / garagem com alta pressão"><div class="en">Pressure-Wash Patio / Driveway</div><div class="pt">Lavar varanda / garagem com alta pressão</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="put up &amp; take down seasonal gear montar e desmontar equipamentos sazonais"><div class="en">Put Up &amp; Take Down Seasonal Gear</div><div class="pt">Montar e desmontar equipamentos sazonais</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="putting groceries away guardar as compras"><div class="en">Putting Groceries Away</div><div class="pt">Guardar as compras</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="replace showerhead / faucet aerator (water off) trocar chuveiro / arejador da torneira (água fechada)"><div class="en">Replace showerhead / faucet aerator (water off)</div><div class="pt">Trocar chuveiro / arejador da torneira (água fechada)</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="replace smoke / co detector batteries trocar baterias de detectores de fumaça / co"><div class="en">Replace Smoke / CO Detector Batteries</div><div class="pt">Trocar baterias de detectores de fumaça / CO</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="restock first-aid &amp; medicine reabastecer kit de primeiros socorros e medicamentos"><div class="en">Restock First-Aid &amp; Medicine</div><div class="pt">Reabastecer kit de primeiros socorros e medicamentos</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="spread mulch / shovel material espalhar cobertura vegetal / material com pá"><div class="en">Spread mulch / shovel material</div><div class="pt">Espalhar cobertura vegetal / material com pá</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="stack firewood empilhar lenha"><div class="en">Stack firewood</div><div class="pt">Empilhar lenha</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="taking out the trash tirar o lixo"><div class="en">Taking Out the Trash</div><div class="pt">Tirar o lixo</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="tighten cabinet &amp; door hardware apertar ferragens de armários e portas"><div class="en">Tighten cabinet &amp; door hardware</div><div class="pt">Apertar ferragens de armários e portas</div><span class="cat cat-misc">Diversas</span></div>
-        <div class="task" data-cat="misc" data-s="walk the dog passear com o cachorro"><div class="en">Walk the Dog</div><div class="pt">Passear com o cachorro</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="kitchen" data-s="baking – knead/roll/cut dough assar – sovar/abrir/cortar massa"><div class="t-name">Baking – knead/roll/cut dough</div><div class="t-sub">Assar – sovar/abrir/cortar massa</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="brew coffee / beverage station reset preparar café / reorganizar estação de bebidas"><div class="t-name">Brew Coffee / Beverage Station Reset</div><div class="t-sub">Preparar café / reorganizar estação de bebidas</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="build a sandwich/salad/plate a dish montar sanduíche/salada/empratar"><div class="t-name">Build a sandwich/salad/plate a dish</div><div class="t-sub">Montar sanduíche/salada/empratar</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="cleaning dishes in sink lavar louça na pia"><div class="t-name">Cleaning Dishes in Sink</div><div class="t-sub">Lavar louça na pia</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="fridge &amp; pantry audit auditoria da geladeira e despensa"><div class="t-name">Fridge &amp; Pantry Audit</div><div class="t-sub">Auditoria da geladeira e despensa</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="kitchen deep clean limpeza profunda da cozinha"><div class="t-name">Kitchen Deep Clean</div><div class="t-sub">Limpeza profunda da cozinha</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="loading dishwasher carregar a lava-louças"><div class="t-name">Loading Dishwasher</div><div class="t-sub">Carregar a lava-louças</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="set the table pôr a mesa"><div class="t-name">Set the Table</div><div class="t-sub">Pôr a mesa</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="setting the table arrumar a mesa"><div class="t-name">Setting the Table</div><div class="t-sub">Arrumar a mesa</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="unloading dishwasher and putting dishes away descarregar a lava-louças e guardar a louça"><div class="t-name">Unloading Dishwasher and Putting Dishes Away</div><div class="t-sub">Descarregar a lava-louças e guardar a louça</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="food prep – wash/peel/chop produce preparo de alimentos – lavar/descascar/picar"><div class="t-name">Food Prep – wash/peel/chop produce</div><div class="t-sub">Preparo de alimentos – lavar/descascar/picar</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="kitchen" data-s="wipe kitchen surfaces limpar superfícies da cozinha"><div class="t-name">Wipe Kitchen Surfaces</div><div class="t-sub">Limpar superfícies da cozinha</div><span class="cat cat-kitchen">Cozinha</span></div>
+        <div class="task" data-cat="laundry" data-s="collecting clothes into a hamper juntar roupas no cesto"><div class="t-name">Collecting Clothes Into a Hamper</div><div class="t-sub">Juntar roupas no cesto</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="duvet into cover / change sheets / make bed colocar edredom na capa / trocar lençóis / fazer a cama"><div class="t-name">Duvet into cover / change sheets / make bed</div><div class="t-sub">Colocar edredom na capa / trocar lençóis / fazer a cama</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="folding clothes and putting them away dobrar roupas e guardar"><div class="t-name">Folding clothes and putting them away</div><div class="t-sub">Dobrar roupas e guardar</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="hanging clothes on hangers pendurar roupas em cabides"><div class="t-name">Hanging clothes on hangers</div><div class="t-sub">Pendurar roupas em cabides</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="ironing &amp; steaming passar roupa e vaporizar"><div class="t-name">Ironing &amp; Steaming</div><div class="t-sub">Passar roupa e vaporizar</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="loading the laundry machine carregar a máquina de lavar"><div class="t-name">Loading the Laundry Machine</div><div class="t-sub">Carregar a máquina de lavar</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="stain treatment &amp; hand-wash tratamento de manchas e lavagem à mão"><div class="t-name">Stain Treatment &amp; Hand-Wash</div><div class="t-sub">Tratamento de manchas e lavagem à mão</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="laundry" data-s="unloading the laundry machine into a hamper retirar da máquina para o cesto"><div class="t-name">Unloading the Laundry Machine Into a Hamper</div><div class="t-sub">Retirar da máquina para o cesto</div><span class="cat cat-laundry">Lavanderia</span></div>
+        <div class="task" data-cat="tidy" data-s="car wash &amp; detail lavar e detalhar o carro"><div class="t-name">Car Wash &amp; Detail</div><div class="t-sub">Lavar e detalhar o carro</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="clean the bathroom limpar o banheiro"><div class="t-name">Clean the Bathroom</div><div class="t-sub">Limpar o banheiro</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="cleaning out car limpar o carro por dentro"><div class="t-name">Cleaning Out Car</div><div class="t-sub">Limpar o carro por dentro</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="deep clean appliances limpeza profunda de eletrodomésticos"><div class="t-name">Deep Clean Appliances</div><div class="t-sub">Limpeza profunda de eletrodomésticos</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="desk tidy &amp; cable management organização da mesa e dos cabos"><div class="t-name">Desk Tidy &amp; Cable Management</div><div class="t-sub">Organização da mesa e dos cabos</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="device dusting &amp; screen cleaning tirar pó de aparelhos e limpar telas"><div class="t-name">Device Dusting &amp; Screen Cleaning</div><div class="t-sub">Tirar pó de aparelhos e limpar telas</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="filing &amp; shredding arquivar e triturar documentos"><div class="t-name">Filing &amp; Shredding</div><div class="t-sub">Arquivar e triturar documentos</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="labeling &amp; inventorying boxes etiquetagem e inventário de caixas"><div class="t-name">Labeling &amp; Inventorying Boxes</div><div class="t-sub">Etiquetagem e inventário de caixas</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="leaf raking &amp; bagging juntar folhas e ensacar"><div class="t-name">Leaf Raking &amp; Bagging</div><div class="t-sub">Juntar folhas e ensacar</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="mail &amp; package sorting triagem de correspondência e encomendas"><div class="t-name">Mail &amp; Package Sorting</div><div class="t-sub">Triagem de correspondência e encomendas</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="organize a junk drawer organizar a gaveta da bagunça"><div class="t-name">Organize a Junk Drawer</div><div class="t-sub">Organizar a gaveta da bagunça</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="organize the garage organizar a garagem"><div class="t-name">Organize the Garage</div><div class="t-sub">Organizar a garagem</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="pack a room for moving empacotar um cômodo para mudança"><div class="t-name">Pack a Room for Moving</div><div class="t-sub">Empacotar um cômodo para mudança</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="party setup &amp; takedown preparação e desmontagem de festa"><div class="t-name">Party Setup &amp; Takedown</div><div class="t-sub">Preparação e desmontagem de festa</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="patio / balcony furniture arrangement arranjo de móveis de varanda / sacada"><div class="t-name">Patio / balcony furniture arrangement</div><div class="t-sub">Arranjo de móveis de varanda / sacada</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="pool cleaning (skim surface) limpeza da piscina (retirar da superfície)"><div class="t-name">Pool cleaning (skim surface)</div><div class="t-sub">Limpeza da piscina (retirar da superfície)</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="post-party cleanup limpeza pós-festa"><div class="t-name">Post-Party Cleanup</div><div class="t-sub">Limpeza pós-festa</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="pull weeds by hand / hand fork arrancar ervas daninhas à mão / com garfo manual"><div class="t-name">Pull weeds by hand / hand fork</div><div class="t-sub">Arrancar ervas daninhas à mão / com garfo manual</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="rearrange wardrobe reorganizar o guarda-roupa"><div class="t-name">Rearrange Wardrobe</div><div class="t-sub">Reorganizar o guarda-roupa</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="replace wiper blades trocar palhetas do limpador de para-brisa"><div class="t-name">Replace wiper blades</div><div class="t-sub">Trocar palhetas do limpador de para-brisa</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="restock office supplies reabastecer material de escritório"><div class="t-name">Restock Office Supplies</div><div class="t-sub">Reabastecer material de escritório</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="scoop a litter box (clean litter) limpar a caixa de areia (higienizar)"><div class="t-name">Scoop a litter box (clean litter)</div><div class="t-sub">Limpar a caixa de areia (higienizar)</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="shelve books by size / color organizar livros por tamanho / cor"><div class="t-name">Shelve books by size / color</div><div class="t-sub">Organizar livros por tamanho / cor</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="sort hardware into divided tray organizar ferragens em bandeja com divisórias"><div class="t-name">Sort hardware into divided tray</div><div class="t-sub">Organizar ferragens em bandeja com divisórias</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="sort recycling into bins separar recicláveis em lixeiras"><div class="t-name">Sort recycling into bins</div><div class="t-sub">Separar recicláveis em lixeiras</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="sweep the porch / patio / deck varrer a varanda / pátio / deck"><div class="t-name">Sweep the porch / patio / deck</div><div class="t-sub">Varrer a varanda / pátio / deck</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="sweeping / vacuuming varrer / aspirar"><div class="t-name">Sweeping / vacuuming</div><div class="t-sub">Varrer / aspirar</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="tidying a single room arrumar um único cômodo"><div class="t-name">Tidying a Single Room</div><div class="t-sub">Arrumar um único cômodo</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="toy pickup &amp; organization recolher e organizar brinquedos"><div class="t-name">Toy Pickup &amp; Organization</div><div class="t-sub">Recolher e organizar brinquedos</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="trim a hedge / prune shrubs (hand shears) aparar cerca-viva / podar arbustos (tesouras manuais)"><div class="t-name">Trim a hedge / prune shrubs (hand shears)</div><div class="t-sub">Aparar cerca-viva / podar arbustos (tesouras manuais)</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="tidy" data-s="unpack &amp; set up a room desembalar e montar um cômodo"><div class="t-name">Unpack &amp; Set Up a Room</div><div class="t-sub">Desembalar e montar um cômodo</div><span class="cat cat-tidy">Organização</span></div>
+        <div class="task" data-cat="misc" data-s="bar / drink station setup montagem de bar / estação de bebidas"><div class="t-name">Bar / Drink Station Setup</div><div class="t-sub">Montagem de bar / estação de bebidas</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="caulking &amp; weatherproofing vedação e isolamento contra intempéries"><div class="t-name">Caulking &amp; Weatherproofing</div><div class="t-sub">Vedação e isolamento contra intempéries</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="change a tire (jack) trocar um pneu (macaco)"><div class="t-name">Change a tire (jack)</div><div class="t-sub">Trocar um pneu (macaco)</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="changing light bulbs &amp; batteries trocar lâmpadas e pilhas"><div class="t-name">Changing Light Bulbs &amp; Batteries</div><div class="t-sub">Trocar lâmpadas e pilhas</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="check &amp; add engine oil (cool engine) verificar e completar óleo do motor (motor frio)"><div class="t-name">Check &amp; add engine oil (cool engine)</div><div class="t-sub">Verificar e completar óleo do motor (motor frio)</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="check tire pressure &amp; add air verificar pressão dos pneus e encher"><div class="t-name">Check tire pressure &amp; add air</div><div class="t-sub">Verificar pressão dos pneus e encher</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="drill into real workpiece furar peça real"><div class="t-name">Drill into real workpiece</div><div class="t-sub">Furar peça real</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="full yard maintenance manutenção completa do quintal"><div class="t-name">Full Yard Maintenance</div><div class="t-sub">Manutenção completa do quintal</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="furniture assembly montagem de móveis"><div class="t-name">Furniture Assembly</div><div class="t-sub">Montagem de móveis</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="furniture disassembly desmontagem de móveis"><div class="t-name">Furniture Disassembly</div><div class="t-sub">Desmontagem de móveis</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="gardening jardinagem"><div class="t-name">Gardening</div><div class="t-sub">Jardinagem</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="hand-sand a surface lixar uma superfície à mão"><div class="t-name">Hand-sand a surface</div><div class="t-sub">Lixar uma superfície à mão</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="hang art &amp; mirrors pendurar quadros e espelhos"><div class="t-name">Hang Art &amp; Mirrors</div><div class="t-sub">Pendurar quadros e espelhos</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="hang curtains on a rod (rings/hooks) pendurar cortinas em varão (argolas/ganchos)"><div class="t-name">Hang curtains on a rod (rings/hooks)</div><div class="t-sub">Pendurar cortinas em varão (argolas/ganchos)</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="holiday decoration setup montagem de decoração de festas"><div class="t-name">Holiday Decoration Setup</div><div class="t-sub">Montagem de decoração de festas</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="loading the car for a road trip carregar o carro para uma viagem"><div class="t-name">Loading the Car for a Road Trip</div><div class="t-sub">Carregar o carro para uma viagem</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="packing a suitcase fazer uma mala"><div class="t-name">Packing a Suitcase</div><div class="t-sub">Fazer uma mala</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="patch &amp; paint walls reparar e pintar paredes"><div class="t-name">Patch &amp; Paint Walls</div><div class="t-sub">Reparar e pintar paredes</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="pet care routine rotina de cuidados com pet"><div class="t-name">Pet Care Routine</div><div class="t-sub">Rotina de cuidados com pet</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="pet feeding &amp; water refresh alimentação e troca de água do pet"><div class="t-name">Pet Feeding &amp; Water Refresh</div><div class="t-sub">Alimentação e troca de água do pet</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="pet grooming &amp; bath banho e tosa do pet"><div class="t-name">Pet Grooming &amp; Bath</div><div class="t-sub">Banho e tosa do pet</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="plunge / snake a drain desentupir um ralo (desentupidor/mangueira)"><div class="t-name">Plunge / snake a drain</div><div class="t-sub">Desentupir um ralo (desentupidor/mangueira)</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="pressure-wash patio / driveway lavar varanda / garagem com alta pressão"><div class="t-name">Pressure-Wash Patio / Driveway</div><div class="t-sub">Lavar varanda / garagem com alta pressão</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="put up &amp; take down seasonal gear montar e desmontar equipamentos sazonais"><div class="t-name">Put Up &amp; Take Down Seasonal Gear</div><div class="t-sub">Montar e desmontar equipamentos sazonais</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="putting groceries away guardar as compras"><div class="t-name">Putting Groceries Away</div><div class="t-sub">Guardar as compras</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="replace showerhead / faucet aerator (water off) trocar chuveiro / arejador da torneira (água fechada)"><div class="t-name">Replace showerhead / faucet aerator (water off)</div><div class="t-sub">Trocar chuveiro / arejador da torneira (água fechada)</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="replace smoke / co detector batteries trocar baterias de detectores de fumaça / co"><div class="t-name">Replace Smoke / CO Detector Batteries</div><div class="t-sub">Trocar baterias de detectores de fumaça / CO</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="restock first-aid &amp; medicine reabastecer kit de primeiros socorros e medicamentos"><div class="t-name">Restock First-Aid &amp; Medicine</div><div class="t-sub">Reabastecer kit de primeiros socorros e medicamentos</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="spread mulch / shovel material espalhar cobertura vegetal / material com pá"><div class="t-name">Spread mulch / shovel material</div><div class="t-sub">Espalhar cobertura vegetal / material com pá</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="stack firewood empilhar lenha"><div class="t-name">Stack firewood</div><div class="t-sub">Empilhar lenha</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="taking out the trash tirar o lixo"><div class="t-name">Taking Out the Trash</div><div class="t-sub">Tirar o lixo</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="tighten cabinet &amp; door hardware apertar ferragens de armários e portas"><div class="t-name">Tighten cabinet &amp; door hardware</div><div class="t-sub">Apertar ferragens de armários e portas</div><span class="cat cat-misc">Diversas</span></div>
+        <div class="task" data-cat="misc" data-s="walk the dog passear com o cachorro"><div class="t-name">Walk the Dog</div><div class="t-sub">Passear com o cachorro</div><span class="cat cat-misc">Diversas</span></div>
       </div>
       <p class="no-results" id="no-results" hidden>Nenhuma tarefa encontrada.</p>
     </div>
@@ -765,127 +516,18 @@
 </footer>
 
 <script>
-// ---------- Tabs ----------
-const tabBtns = document.querySelectorAll('.tab-btn');
-const panels = document.querySelectorAll('.panel');
-tabBtns.forEach(btn => btn.addEventListener('click', () => {
-  tabBtns.forEach(b => b.classList.remove('active'));
-  panels.forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById(btn.dataset.tab).classList.add('active');
-  window.scrollTo({top:0});
-}));
-
-// ---------- Tasks filter (markup is pre-rendered in the HTML for SEO) ----------
-const taskEls = [...document.querySelectorAll("#task-list .task")];
-const countEl = document.getElementById("task-count");
-const searchEl = document.getElementById("task-search");
-const noResultsEl = document.getElementById("no-results");
-let activeCat = "all";
-
-function renderTasks(){
-  const q = searchEl.value.trim().toLowerCase();
-  let shown = 0;
-  taskEls.forEach(el => {
-    const match = (activeCat === "all" || el.dataset.cat === activeCat) &&
-                  (!q || el.dataset.s.includes(q));
-    el.hidden = !match;
-    if(match) shown++;
-  });
-  countEl.textContent = shown + " tarefa" + (shown === 1 ? "" : "s");
-  noResultsEl.hidden = shown > 0;
-}
-
-document.getElementById("filters").addEventListener("click", e => {
-  if(!e.target.classList.contains("chip")) return;
-  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-  e.target.classList.add("active");
-  activeCat = e.target.dataset.cat;
-  renderTasks();
-});
-searchEl.addEventListener("input", renderTasks);
-renderTasks();
-
-// ---------- Calculator ----------
-const L1 = 2.50, L2 = 1.25, WEEKS = 4.33;
-const rd = document.getElementById('r-directs'),
-      rh = document.getElementById('r-hours'),
-      rl = document.getElementById('r-l2');
-
-function calc(){
-  const d = +rd.value, h = +rh.value, l2 = +rl.value;
-  document.getElementById('v-directs').textContent = d;
-  document.getElementById('v-hours').textContent = h;
-  document.getElementById('v-l2').textContent = l2;
-  const monthly = d * h * WEEKS * L1 + d * l2 * h * WEEKS * L2;
-  document.getElementById('calc-total').textContent =
-    'R$ ' + monthly.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-}
-[rd, rh, rl].forEach(r => r.addEventListener('input', calc));
-calc();
-
-// ---------- Copy link ----------
-document.getElementById('copy-btn').addEventListener('click', async () => {
-  const input = document.getElementById('ref-link');
-  try {
-    await navigator.clipboard.writeText(input.value);
-  } catch {
-    input.select();
-    document.execCommand('copy');
-  }
-  const btn = document.getElementById('copy-btn');
-  btn.textContent = 'Copiado ✓';
-  setTimeout(() => btn.textContent = 'Copiar', 2000);
-});
-
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// ---------- Analytics events ----------
-document.addEventListener('click', e => {
-  const a = e.target.closest('a[href]');
-  if(!a || typeof gtag !== 'function') return;
-  if(a.href.includes('ai.hub.xyz')) {
-    gtag('event', 'referral_click', {link_url: a.href, link_text: a.textContent.trim()});
-    // Google Ads conversion — não há página de obrigado (o cadastro acontece no Hub),
-    // então a saída para o link de indicação é o evento de conversão.
-    gtag('event', 'conversion', {'send_to': 'AW-945891303/CCu5COi-1NIcEOfPhMMD'});
-  } else if(a.href.includes('chat.whatsapp.com')) {
-    gtag('event', 'whatsapp_click', {link_url: a.href});
-  }
-});
+window.I18N = {
+  lang: 'pt-BR',
+  locale: 'pt-BR',
+  currency: 'BRL',
+  rateL1: 2.50,
+  rateL2: 1.25,
+  taskOne: 'tarefa',
+  taskMany: 'tarefas',
+  copy: 'Copiar',
+  copied: 'Copiado ✓'
+};
 </script>
-<script>
-// Vídeos de exemplo: só carregam e tocam quando entram na tela.
-// preload="none" no HTML garante que nada é baixado antes disso.
-(function(){
-  var vids = document.querySelectorAll('#exemplos video');
-  if(!vids.length) return;
-
-  // Quem pediu menos movimento recebe controles em vez de autoplay.
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    vids.forEach(function(v){ v.controls = true; v.preload = 'metadata'; });
-    return;
-  }
-  if(!('IntersectionObserver' in window)){
-    vids.forEach(function(v){ v.controls = true; });
-    return;
-  }
-
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      var v = e.target;
-      if(e.isIntersecting){
-        var p = v.play();
-        // Safari/iOS em modo economia de bateria recusa o play: cai para controles.
-        if(p && p.catch) p.catch(function(){ v.controls = true; });
-      } else {
-        v.pause();
-      }
-    });
-  }, {threshold: 0.4});
-
-  vids.forEach(function(v){ io.observe(v); });
-})();
-</script>
+<script src="/app.js" defer></script>
 </body>
 </html>
