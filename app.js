@@ -7,13 +7,41 @@
   // ---------- Tabs ----------
   var tabBtns = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.panel');
+
+  function showTab(name) {
+    tabBtns.forEach(function (b) { b.classList.toggle('active', b.dataset.tab === name); });
+    panels.forEach(function (p) { p.classList.toggle('active', p.id === name); });
+    window.scrollTo({ top: 0 });
+  }
+
   tabBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      tabBtns.forEach(function (b) { b.classList.remove('active'); });
-      panels.forEach(function (p) { p.classList.remove('active'); });
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab).classList.add('active');
-      window.scrollTo({ top: 0 });
+    btn.addEventListener('click', function () { showTab(btn.dataset.tab); });
+  });
+
+  // In-page links that jump to another tab: <a data-goto="tarefas">
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-goto]');
+    if (!a) return;
+    e.preventDefault();
+    showTab(a.dataset.goto);
+  });
+
+  // ---------- Platform card expand ----------
+  document.querySelectorAll('.plat').forEach(function (plat) {
+    var head = plat.querySelector('.plat-head');
+    var label = plat.querySelector('.expand-label');
+    if (!head) return;
+    var toggle = function () {
+      var open = plat.classList.toggle('open');
+      head.setAttribute('aria-expanded', String(open));
+      if (label) label.textContent = open ? (I18N.close || 'Fechar') : (I18N.details || 'Ver detalhes');
+    };
+    head.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return; // let links inside the header work
+      toggle();
+    });
+    head.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
   });
 
@@ -73,6 +101,108 @@
     };
     [rd, rh, rl].forEach(function (r) { r.addEventListener('input', calc); });
     calc();
+  }
+
+  // ---------- Earnings estimator ----------
+  var slider = document.getElementById('hours-slider');
+  var est = I18N.est;
+
+  if (slider && est) {
+    var DAYS = 30;
+    var SYM = { USD: 'US$', BRL: 'R$' };
+    var mode = est.startCurrency || 'USD';
+    var curBtn = document.getElementById('currency-toggle');
+
+    var nf = new Intl.NumberFormat(I18N.locale, { maximumFractionDigits: 0 });
+
+    // Converts between the two currencies the estimator knows about.
+    var convert = function (amount, from, to) {
+      if (from === to) return amount;
+      return from === 'USD' ? amount * est.exchangeRate : amount / est.exchangeRate;
+    };
+
+    var tabsEl = document.getElementById('est-tabs');
+    var current = est.platforms[0];
+
+    var renderTabs = function () {
+      tabsEl.innerHTML = est.platforms.map(function (p) {
+        return '<button type="button" class="est-tab' + (p === current ? ' active' : '') +
+               '" data-plat="' + p.id + '"><span class="dot">' + p.initial + '</span>' + p.name + '</button>';
+      }).join('');
+    };
+
+    var renderReview = function () {
+      document.getElementById('est-review').innerHTML =
+        '<div class="est-highlight">' + est.highlightLabel + ': ' + current.highlight + '</div>' +
+        '<div class="rev-block" style="margin-bottom:0">' +
+        '<div class="rev-col pros"><div class="rev-col-title pros">' + est.prosLabel + '</div><ul>' +
+        current.pros.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul></div>' +
+        '<div class="rev-col cons"><div class="rev-col-title cons">' + est.consLabel + '</div><ul>' +
+        current.cons.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul></div></div>';
+    };
+
+    var render = function () {
+      var h = parseFloat(slider.value);
+      var monthlyHours = h * DAYS;
+      var sym = SYM[mode];
+      var rate = Math.round(convert(current.rate, current.rateCurrency, mode));
+      var base = h * rate * DAYS;
+
+      var hit = [], locked = [];
+      (current.bonuses || []).forEach(function (b) {
+        var amount = Math.round(convert(b.amount, current.bonusCurrency, mode));
+        (monthlyHours >= b.threshold ? hit : locked).push({ milestone: b.milestone, amount: amount });
+      });
+      var bonusSum = hit.reduce(function (s, b) { return s + b.amount; }, 0);
+
+      document.getElementById('hours-display').textContent = h + est.hoursSuffix;
+      document.getElementById('est-platform-name').textContent = current.name;
+      document.getElementById('total-amount').innerHTML =
+        sym + ' ' + nf.format(base + bonusSum) + '<span class="per"> ' + est.perMonth + '</span>';
+      if (curBtn && !est.noToggle) curBtn.textContent = mode === 'USD' ? est.toBRL : est.toUSD;
+
+      document.getElementById('est-footnote').textContent =
+        bonusSum > 0 ? est.footWithBonus(sym, nf.format(bonusSum))
+                     : ((current.bonuses || []).length ? est.footNoBonus : est.footNoBonusAtAll);
+
+      var html = '<div class="brk-row"><span class="brk-label">' + est.recLabel(h, rate, sym) +
+                 '</span><span class="brk-val">' + sym + ' ' + nf.format(base) + '</span></div>';
+      hit.forEach(function (b) {
+        html += '<div class="brk-row"><span class="brk-label">' + est.bonusHit(b.milestone) +
+                '</span><span class="brk-val plus">+ ' + sym + ' ' + nf.format(b.amount) + '</span></div>';
+      });
+      if (locked.length) {
+        html += '<div class="brk-head">' + est.nextMilestones + '</div>';
+        locked.slice(0, 6).forEach(function (b) {
+          html += '<div class="brk-row brk-locked"><span class="brk-label">' + est.bonusLocked(b.milestone) +
+                  '</span><span class="brk-val">' + sym + ' ' + nf.format(b.amount) + '</span></div>';
+        });
+      }
+      if (!(current.bonuses || []).length) {
+        html += '<div class="brk-row"><span class="brk-label" style="color:var(--muted)">' +
+                est.footNoBonusAtAll + '</span></div>';
+      }
+      document.getElementById('earnings-breakdown').innerHTML = html;
+    };
+
+    var renderAll = function () { renderTabs(); renderReview(); render(); };
+
+    tabsEl.addEventListener('click', function (e) {
+      var btn = e.target.closest('.est-tab');
+      if (!btn) return;
+      est.platforms.forEach(function (p) { if (p.id === btn.dataset.plat) current = p; });
+      renderAll();
+    });
+
+    slider.addEventListener('input', render);
+    if (curBtn && !est.noToggle) {
+      curBtn.hidden = false;
+      curBtn.addEventListener('click', function () {
+        mode = mode === 'USD' ? 'BRL' : 'USD';
+        render();
+      });
+    }
+    renderAll();
   }
 
   // ---------- Copy link ----------
