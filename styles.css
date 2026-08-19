@@ -59,10 +59,16 @@ header{
 .brand{
   font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;
   letter-spacing:.06em;text-transform:uppercase;color:var(--ink);
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:8px;white-space:nowrap;
 }
 .brand .bot{color:var(--accent)}
-.brand-suffix{color:var(--muted);font-weight:400;letter-spacing:.08em}
+.brand-mark{width:28px;height:28px;flex:none;display:block}
+.brand-mark .bm-head,.brand-mark .bm-ear,.brand-mark .bm-phone{fill:var(--ink)}
+.brand-mark .bm-body{fill:var(--ink);opacity:.5}
+.brand-mark .bm-screen{fill:var(--accent);opacity:.9}
+.brand-mark .bm-arm{stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.brand-mark .bm-strap{fill:none;stroke:var(--accent);stroke-width:1.9;stroke-linecap:round}
+
 .tabs{display:flex;gap:4px}
 .tab-btn{
   background:none;border:1px solid transparent;color:var(--muted);
@@ -553,6 +559,8 @@ footer .social a{color:var(--body)}
 }
 @media(max-width:680px){
   .nav{flex-wrap:wrap;justify-content:center;gap:10px}
+  .nav>*{flex:0 0 100%;justify-content:center}
+  .brand{justify-content:center}
   .hero{padding:48px 0 32px}
   .wa-float span{display:none}
   .wa-float{padding:14px}

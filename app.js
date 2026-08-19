@@ -125,6 +125,8 @@
     var current = est.platforms[0];
 
     var renderTabs = function () {
+      // A single platform needs no picker.
+      tabsEl.hidden = est.platforms.length < 2;
       tabsEl.innerHTML = est.platforms.map(function (p) {
         return '<button type="button" class="est-tab' + (p === current ? ' active' : '') +
                '" data-plat="' + p.id + '"><span class="dot">' + p.initial + '</span>' + p.name + '</button>';
