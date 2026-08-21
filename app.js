@@ -5,7 +5,7 @@
   var I18N = window.I18N || {};
 
   // ---------- Tabs ----------
-  var tabBtns = document.querySelectorAll('.tab-btn');
+  var tabBtns = document.querySelectorAll('.tab-btn[data-tab]');
   var panels = document.querySelectorAll('.panel');
 
   function showTab(name) {
@@ -17,6 +17,11 @@
   tabBtns.forEach(function (btn) {
     btn.addEventListener('click', function () { showTab(btn.dataset.tab); });
   });
+
+  // Deep link vindo dos guias: /#tarefas abre a aba, nao so rola a pagina.
+  var deep = (location.hash || '').slice(1);
+  var deepEl = deep && document.getElementById(deep);
+  if (deepEl && deepEl.classList.contains('panel')) showTab(deep);
 
   // In-page links that jump to another tab: <a data-goto="tarefas">
   document.addEventListener('click', function (e) {

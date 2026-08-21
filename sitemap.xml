@@ -3,7 +3,9 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://trainerobot.vercel.app/</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es"/>
@@ -11,7 +13,9 @@
   </url>
   <url>
     <loc>https://trainerobot.vercel.app/en</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es"/>
@@ -19,10 +23,162 @@
   </url>
   <url>
     <loc>https://trainerobot.vercel.app/es</loc>
-    <lastmod>2026-08-07</lastmod>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/guias</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/en/guides</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/es/guias</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/guias/como-ganhar-dinheiro-gravando-tarefas-em-casa</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/como-ganhar-dinheiro-gravando-tarefas-em-casa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/como-ganar-dinero-grabando-tareas-en-casa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/como-ganhar-dinheiro-gravando-tarefas-em-casa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/como-ganar-dinero-grabando-tareas-en-casa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/es/guias/como-ganar-dinero-grabando-tareas-en-casa</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/como-ganhar-dinheiro-gravando-tarefas-em-casa"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/como-ganar-dinero-grabando-tareas-en-casa"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-to-make-money-recording-household-tasks"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/guias/hub-e-confiavel</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/hub-e-confiavel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/hub-es-confiable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/en/guides/is-hub-legit</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/hub-e-confiavel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/hub-es-confiable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/es/guias/hub-es-confiable</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/hub-e-confiavel"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/hub-es-confiable"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/is-hub-legit"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/guias/celulares-compativeis-minute-data</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/celulares-compativeis-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/celulares-compatibles-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/celulares-compativeis-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/celulares-compatibles-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/es/guias/celulares-compatibles-minute-data</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/celulares-compativeis-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/celulares-compatibles-minute-data"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/compatible-phones-minute-data"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/guias/quanto-a-hub-paga-por-hora</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/quanto-a-hub-paga-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/cuanto-paga-hub-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/quanto-a-hub-paga-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/cuanto-paga-hub-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
+  </url>
+  <url>
+    <loc>https://trainerobot.vercel.app/es/guias/cuanto-paga-hub-por-hora</loc>
+    <lastmod>2026-08-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://trainerobot.vercel.app/guias/quanto-a-hub-paga-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://trainerobot.vercel.app/es/guias/cuanto-paga-hub-por-hora"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://trainerobot.vercel.app/en/guides/how-much-does-hub-pay-per-hour"/>
   </url>
 </urlset>
