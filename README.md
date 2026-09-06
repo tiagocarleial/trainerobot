@@ -21,7 +21,7 @@ Opção 2 — GitHub:
 
 ## Editar
 
-- Link de referral: procure por `ROBOT1` no `index.html` (aparece 4 vezes)
+- Link de referral: procure por `RG4WW24V` nos `index.html` (pt/en/es + guias)
 - Valores de comissão: constantes `L1` e `L2` no `<script>` no fim do arquivo
 - Lista de tarefas: as 84 tarefas ficam **direto no HTML** (`<div class="task" data-cat data-s>`),
   dentro de `#task-list`. Isso é proposital: crawlers que não executam JS (Bingbot) precisam
