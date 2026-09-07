@@ -227,6 +227,10 @@ section.chapter{padding:72px 0;border-top:1px solid var(--line)}
 .expand-btn:hover{border-color:var(--ink)}
 .expand-icon{display:inline-block;transition:transform .2s;font-weight:400;font-size:14px}
 .plat-body{display:none;padding:24px;border-top:1px solid var(--line)}
+.plat-lead{background:var(--accent-soft);border-radius:12px;padding:18px 20px;margin-bottom:22px}
+.plat-lead-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;letter-spacing:-.015em;margin:10px 0 6px}
+.plat-lead p{font-size:14px;line-height:1.6;color:var(--body);margin:0 0 14px}
+.plat-lead .btn{padding:9px 16px;font-size:13px}
 .plat.open .plat-body{display:block}
 .plat.open .plat-head{padding-bottom:20px}
 .plat.open .expand-icon{transform:rotate(45deg)}
