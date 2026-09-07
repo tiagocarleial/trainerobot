@@ -251,8 +251,6 @@
       // Google Ads conversion — there is no thank-you page (signup happens on Hub),
       // so leaving via the referral link is the conversion event.
       gtag('event', 'conversion', { send_to: 'AW-945891303/CCu5COi-1NIcEOfPhMMD' });
-    } else if (a.href.indexOf('chat.whatsapp.com') !== -1) {
-      gtag('event', 'whatsapp_click', { link_url: a.href, page_language: I18N.lang });
     }
   });
 
