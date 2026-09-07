@@ -106,6 +106,9 @@ header{
 .btn-wa{background:#25D366;color:#fff}
 .btn-wa:hover{background:#1EBE5D;color:#fff}
 .btn-wa svg{width:16px;height:16px;fill:#fff}
+.btn-tg{background:#229ED9;color:#fff}
+.btn-tg:hover{background:#1B87BA;color:#fff}
+.btn-tg svg{width:16px;height:16px;fill:#fff}
 .cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 .disclosure{font-size:12.5px;color:var(--muted);margin-top:14px}
 
@@ -231,6 +234,100 @@ section.chapter{padding:72px 0;border-top:1px solid var(--line)}
 .plat-lead-title{font-family:'Fraunces',serif;font-size:19px;font-weight:700;letter-spacing:-.015em;margin:10px 0 6px}
 .plat-lead p{font-size:14px;line-height:1.6;color:var(--body);margin:0 0 14px}
 .plat-lead .btn{padding:9px 16px;font-size:13px}
+.plat-body .table-scroll{overflow-x:auto;margin:0}
+.plat-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.plat-table th,.plat-table td{border:1px solid var(--line);padding:8px 10px;text-align:left;white-space:nowrap}
+.plat-table th{background:var(--neutral-soft);color:var(--ink);font-weight:600;font-size:12.5px}
+.plat-table td{font-family:'JetBrains Mono',monospace}
+.plat-table td:first-child{font-family:inherit}
+
+/* Golden rules */
+.rule-grid{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+}
+.rule{
+  position:relative;background:var(--paper);border:1px solid var(--line);
+  border-radius:14px;padding:22px 24px 24px;
+}
+.rule-num{
+  width:30px;height:30px;border-radius:999px;background:var(--ink);color:var(--bg);
+  font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+}
+.rule-title{
+  font-family:'Fraunces',serif;font-size:18px;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink);margin-bottom:8px;
+}
+.rule-body{font-size:14px;line-height:1.65;color:var(--body);margin:0}
+.rule-body code{
+  font-family:'JetBrains Mono',monospace;font-size:12.5px;
+  background:var(--neutral-soft);padding:2px 6px;border-radius:5px;color:var(--ink);
+  white-space:nowrap;
+}
+.rule-warn{background:var(--warn-soft);border-color:var(--warn)}
+.rule-warn .rule-num{background:var(--warn);color:#fff}
+.rule-grid .rule:last-child:nth-child(odd){grid-column:1 / -1}
+
+@media (max-width:760px){
+  .rule-grid{grid-template-columns:1fr;gap:14px}
+  .rule{padding:20px}
+}
+
+/* Comparison card above the platform reviews */
+.cmp-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;margin:0 0 24px;
+}
+.cmp-head{padding:20px 24px 16px}
+.cmp-title{
+  font-family:'Fraunces',serif;font-size:20px;font-weight:700;
+  letter-spacing:-.015em;color:var(--ink);margin:0 0 6px;
+}
+.cmp-sub{font-size:13.5px;line-height:1.55;color:var(--body);margin:0}
+.cmp-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13.5px}
+.cmp-table th,.cmp-table td{padding:12px 14px;text-align:left;vertical-align:top}
+.cmp-table thead th{
+  background:var(--neutral-soft);color:var(--neutral-ink);font-weight:600;
+  font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.cmp-table thead th:first-child{width:23%}
+.cmp-table thead th:nth-child(2){width:17%}
+.cmp-table thead th:nth-child(3),.cmp-table thead th:nth-child(4){width:13%}
+.cmp-table tbody th{font-weight:700;color:var(--ink);font-size:14.5px}
+.cmp-table tbody td{color:var(--body)}
+.cmp-table tbody td:first-of-type{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--ink)}
+.cmp-table tbody tr+tr th,.cmp-table tbody tr+tr td{border-top:1px solid var(--line)}
+.cmp-table a{color:inherit;text-decoration:none}
+.cmp-table a:hover{color:var(--accent)}
+.cmp-table tr.is-top{background:var(--accent-soft)}
+.cmp-table tr.is-top td:first-of-type{color:var(--accent)}
+.cmp-table tr.is-muted th,.cmp-table tr.is-muted td{color:var(--neutral-ink)}
+.cmp-table tr.is-muted td:first-of-type{color:var(--neutral-ink)}
+.cmp-pill{
+  display:block;width:fit-content;margin-top:5px;font-family:'Inter',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 7px;
+  border-radius:999px;background:var(--accent);color:#fff;
+}
+.cmp-pill.pill-off{background:var(--neutral-soft);color:var(--neutral-ink)}
+
+@media (max-width:760px){
+  .cmp-table,.cmp-table tbody,.cmp-table tr,.cmp-table th,.cmp-table td{display:block}
+  .cmp-table thead{display:none}
+  .cmp-table tbody tr{padding:16px 20px;border-top:1px solid var(--line)}
+  .cmp-table tbody tr+tr th,.cmp-table tbody tr+tr td{border-top:none}
+  .cmp-table tbody th{padding:0 0 10px;font-size:16px}
+  .cmp-table tbody td{
+    padding:5px 0;display:flex;justify-content:space-between;gap:16px;
+    align-items:baseline;text-align:right;
+  }
+  .cmp-table tbody td::before{
+    content:attr(data-lbl);flex:0 0 auto;text-align:left;
+    font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--neutral-ink);font-family:'Inter',sans-serif;
+  }
+}
 .plat.open .plat-body{display:block}
 .plat.open .plat-head{padding-bottom:20px}
 .plat.open .expand-icon{transform:rotate(45deg)}
@@ -545,6 +642,18 @@ footer .social a{color:var(--body)}
 .wa-float:hover{transform:translateY(-2px);text-decoration:none;color:#fff}
 .wa-float svg{width:20px;height:20px;fill:#fff}
 
+/* ---------- Telegram float (stacked above WhatsApp) ---------- */
+.wa-float{bottom:78px}
+.tg-float{
+  position:fixed;bottom:22px;right:22px;z-index:60;
+  display:flex;align-items:center;gap:8px;
+  background:#229ED9;color:#fff;font-weight:600;font-size:14px;
+  padding:12px 18px;border-radius:999px;
+  box-shadow:0 6px 24px rgba(34,158,217,.35);transition:transform .15s;
+}
+.tg-float:hover{transform:translateY(-2px);text-decoration:none;color:#fff}
+.tg-float svg{width:20px;height:20px;fill:#fff}
+
 /* ---------- Responsive ---------- */
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr;gap:32px}
@@ -566,8 +675,9 @@ footer .social a{color:var(--body)}
   .nav>*{flex:0 0 100%;justify-content:center}
   .brand{justify-content:center}
   .hero{padding:48px 0 32px}
-  .wa-float span{display:none}
-  .wa-float{padding:14px}
+  .wa-float span,.tg-float span{display:none}
+  .wa-float,.tg-float{padding:14px}
+  .wa-float{bottom:76px}
 }
 
 /* ---------- Guias (páginas de conteúdo) ---------- */
