@@ -185,6 +185,7 @@ section.chapter{padding:72px 0;border-top:1px solid var(--line)}
   border-radius:20px;overflow:hidden;position:relative;
 }
 .plat.featured{border:1.5px solid var(--accent);box-shadow:0 4px 24px -8px rgba(15,118,110,.22)}
+#plat-crowtado{order:-1}
 .featured-tag{
   position:absolute;top:-1px;right:24px;background:var(--accent);color:#fff;
   font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;
@@ -300,6 +301,9 @@ section.chapter{padding:72px 0;border-top:1px solid var(--line)}
 .cmp-table a:hover{color:var(--accent);border-bottom-color:var(--accent)}
 .cmp-table tr.is-top{background:var(--accent-soft)}
 .cmp-table tr.is-top td:first-of-type{color:var(--accent)}
+.platform-hidden{display:none!important}
+/* Hub stays in the source for a future reactivation, but its signup links are hidden site-wide. */
+a[href*="ai.hub.xyz"]{display:none!important}
 .cmp-pill{
   display:block;width:fit-content;margin-top:5px;font-family:'Inter',sans-serif;
   font-size:10px;font-weight:700;letter-spacing:.05em;padding:2px 7px;
