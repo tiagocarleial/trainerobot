@@ -625,6 +625,16 @@ footer p+p{margin-top:8px}
 footer .social{display:flex;gap:18px;font-size:13.5px}
 footer .social a{color:var(--body)}
 
+/* ---------- Privacy policy ---------- */
+.privacy-main{padding:48px 0 72px}
+.privacy-copy{max-width:780px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(24px,5vw,48px)}
+.privacy-copy h1{font-size:clamp(32px,5vw,44px);margin:8px 0 10px}
+.privacy-copy h2{font-size:22px;margin:32px 0 10px}
+.privacy-copy p,.privacy-copy li{font-size:15px;line-height:1.75;color:var(--body)}
+.privacy-copy p+p{margin-top:12px}
+.privacy-copy ul{padding-left:22px;margin:10px 0 0}
+.privacy-copy .updated{font-size:13px;color:var(--muted);margin-bottom:24px}
+
 /* ---------- Telegram float ---------- */
 .tg-float{
   position:fixed;bottom:22px;right:22px;z-index:60;
