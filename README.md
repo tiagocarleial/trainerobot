@@ -1,8 +1,24 @@
 # TraineRobot
 
+## Controle privado de pagamentos
+
+O painel fica em `/controle-pagamentos`. Ele não aparece na navegação nem no sitemap. O acesso depende de senha; esconder o endereço sozinho não protege os dados. Cada usuário recebe um link privado `/pagamento?client=...` para consulta sem cadastro. Ao criar outra transação, selecione o usuário existente: o mesmo link mostrará todo o histórico dele. Quem tiver esse link poderá ver os valores, status, hash e comprovantes das transações daquele usuário. A chave PIX e as notas internas ficam apenas no painel.
+
+A página `/transacoes` reúne todas as operações sem exigir senha. Ela não aparece na navegação nem no sitemap. Exibe o nome ou identificação do usuário, @ do Telegram quando informado, valores, cotação, status e hash público da Base. Chaves PIX e imagens dos comprovantes continuam fora da visão geral.
+
+Antes de usar em produção:
+
+1. Crie um projeto Supabase e execute `supabase/payments.sql` no SQL Editor. Ele cria a tabela com RLS e um bucket **privado** para comprovantes.
+2. Configure no projeto Vercel as variáveis de ambiente `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `ADMIN_PASSWORD` e `ADMIN_SESSION_SECRET`. Use uma senha forte e uma chave aleatória longa para a sessão. A secret key e a senha nunca devem ir para arquivos públicos ou para o navegador. A antiga variável `SUPABASE_SERVICE_ROLE_KEY` ainda é aceita pelo código como alternativa.
+3. Faça um novo deploy. Acesse `/controle-pagamentos`, entre com a senha, crie uma transação e copie o link individual para o usuário.
+
+O painel registra manualmente a cotação BRL por USDC na data/hora indicada e calcula `USDC × cotação × 0,80`, arredondado para centavos. O recebimento na Base e o envio do PIX são confirmados manualmente. Não há integração automática com carteira ou banco. Imagens JPG, PNG e WebP de até 2 MB podem ser anexadas a cada transação.
+
+Para visualizar localmente sem Supabase, crie `.env.local` com `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` e `PAYMENTS_DEMO_MODE=1`, depois execute `npm run dev`. O modo de demonstração guarda os registros em `.dev-payments.json`, arquivo ignorado pelo Git. Ele só é ativado fora do ambiente de produção.
+
 Landing page em português sobre o app Hub (gravação de tarefas domésticas para treinar robôs de IA), com lista de 84 tarefas traduzidas, programa de indicações e simulador de ganhos.
 
-Site estático — um único `index.html`, sem build.
+O conteúdo público é estático. O controle de pagamentos usa funções Vercel e Supabase.
 
 ## Deploy no Vercel
 
@@ -17,7 +33,7 @@ Opção 2 — GitHub:
 
 1. Suba este repositório para o GitHub
 2. Em vercel.com → Add New Project → importe o repositório
-3. Framework: **Other** (site estático, sem build) → Deploy
+3. Framework: **Other** → Deploy
 
 ## Editar
 

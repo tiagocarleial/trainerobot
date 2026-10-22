@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive"><meta name="referrer" content="no-referrer">
+  <title>Controle de pagamentos</title><link rel="stylesheet" href="/pagamentos.css">
+</head>
+<body>
+  <main class="wrap">
+    <header><div><p class="eyebrow">TraineRobot · acesso privado</p><h1>Controle de pagamentos</h1></div><button id="logout" class="quiet" hidden>Sair</button></header>
+    <section id="login" class="card narrow"><h2>Entrar</h2><form id="login-form"><label>Senha administrativa<input id="password" type="password" autocomplete="current-password" required></label><button>Entrar</button></form><p id="login-message" class="message" role="status"></p></section>
+    <div id="app" hidden>
+      <p id="demo-banner" class="demo-banner" hidden>Modo demonstração: os registros ficam somente neste computador e não são pagamentos reais.</p>
+      <section class="summary"><div class="card"><span>Registros</span><strong id="total">0</strong></div><div class="card"><span>USDC recebido</span><strong id="received">0</strong></div><div class="card"><span>PIX enviado</span><strong id="paid">R$ 0,00</strong></div></section>
+      <section class="card"><div class="section-head"><h2 id="form-title">Nova transação</h2><button id="new" class="quiet" type="button">Limpar formulário</button></div>
+        <form id="payment-form"><input id="id" type="hidden"><div class="grid">
+          <label>Usuário desta transação<select id="client_token"><option value="">Novo usuário</option></select></label>
+          <label>Nome ou identificação do usuário<input id="client_name" maxlength="120" placeholder="Ex.: Maria ou @fulano" required></label>
+          <label>Usuário do Telegram (opcional)<input id="telegram_handle" maxlength="33" placeholder="@fulano" autocomplete="off"></label>
+          <label>Chave PIX (visível só para você)<input id="pix_key" maxlength="180" autocomplete="off"></label>
+          <label class="wide">Sua carteira de recebimento na rede Base<input id="wallet_address" maxlength="100" placeholder="0x..."></label>
+          <label>Valor recebido em USDC<input id="usdc_amount" type="number" min="0.000001" max="1000000" step="0.000001" required></label>
+          <label>Cotação da transação · R$ por USDC<input id="rate_brl" type="number" min="0.000001" max="1000" step="0.000001" required></label>
+          <label>Data e hora da cotação<input id="exchange_at" type="datetime-local" required></label>
+          <label>Status<select id="status"><option value="aguardando">Aguardando recebimento</option><option value="recebido">USDC recebido</option><option value="pix_enviado">PIX enviado</option></select></label>
+          <label class="wide">Hash da transação na Base<input id="crypto_tx_hash" maxlength="100" placeholder="0x..."></label>
+          <label class="wide">Observações internas<textarea id="notes" maxlength="1000" rows="3"></textarea></label>
+        </div><p class="calculation">PIX previsto: <strong id="preview">R$ 0,00</strong> <small>USDC × cotação × 80%. A cotação é informada por você e fica registrada.</small></p><button type="submit">Salvar transação</button><p id="form-message" class="message" role="status"></p></form>
+      </section>
+      <section class="card"><div class="section-head"><h2>Transações</h2><input id="search" aria-label="Buscar usuário" placeholder="Buscar usuário"></div><div id="rows" class="rows"></div></section>
+    </div>
+  </main><script src="/controle-pagamentos/painel.js" defer></script>
+</body></html>
