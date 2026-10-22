@@ -107,8 +107,8 @@ begin
     usdc_amount, rate_brl, exchange_at, pix_amount, pix_manual, provisional,
     crypto_tx_hash, status, notes, received_at, created_at
   ) values (
-    rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
-    rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
+    substring(replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '') from 1 for 43),
+    substring(replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '') from 1 for 43),
     'A identificar', lower(deposit->>'to_address'), lower(deposit->>'from_address'),
     (deposit->>'usdc_amount')::numeric, null, null, null, false, true,
     lower(deposit->>'tx_hash'), 'recebido',
