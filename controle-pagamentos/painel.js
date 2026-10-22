@@ -7,6 +7,29 @@ const fields = ['client_name','telegram_handle','pix_key','wallet_address','send
 let payments = [];
 let deposits = [];
 
+function decimalUnits(value, places) {
+  if (value === null || value === undefined || value === '') return null;
+  const match = String(value).match(new RegExp(`^(0|[1-9]\\d*)(?:\\.(\\d{1,${places}}))?$`));
+  if (!match) return null;
+  return BigInt(match[1]) * 10n ** BigInt(places) + BigInt((match[2] || '').padEnd(places, '0'));
+}
+function commission(usdc, rate, pix) {
+  const amount = decimalUnits(usdc, 6);
+  const quote = decimalUnits(rate, 6);
+  const pixCents = decimalUnits(pix, 2);
+  if (amount === null || quote === null || pixCents === null || amount <= 0n || quote <= 0n) return null;
+  const grossCents = Number((amount * quote + 5000000000n) / 10000000000n);
+  const paidCents = Number(pixCents);
+  return { grossCents, paidCents, commissionCents: grossCents - paidCents };
+}
+const centsMoney = cents => money(cents / 100);
+function defaultPix(usdc, rate) {
+  const amount = decimalUnits(usdc, 6);
+  const quote = decimalUnits(rate, 6);
+  if (amount === null || quote === null) return 0;
+  return Number((amount * quote * 80n + 500000000000n) / 1000000000000n) / 100;
+}
+
 async function api(path, options = {}) {
   const response = await fetch(path, { credentials: 'same-origin', cache: 'no-store', ...options });
   const data = await response.json();
@@ -29,7 +52,11 @@ function reset() {
 }
 function preview() {
   const override = $('pix_amount_override').value;
-  $('preview').textContent = money(override === '' ? Math.round((Number($('usdc_amount').value) || 0) * (Number($('rate_brl').value) || 0) * 80) / 100 : Number(override));
+  const pix = override === '' ? defaultPix($('usdc_amount').value, $('rate_brl').value) : Number(override);
+  $('preview').textContent = money(pix);
+  const result = commission($('usdc_amount').value, $('rate_brl').value, String(pix));
+  $('preview-gross').textContent = result ? centsMoney(result.grossCents) : '—';
+  $('preview-commission').textContent = result ? centsMoney(result.commissionCents) : '—';
 }
 function showApp() { $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false; }
 function showLogin() { $('login').hidden = false; $('app').hidden = true; $('logout').hidden = true; }
@@ -119,6 +146,14 @@ function render() {
   $('total').textContent = payments.length;
   $('received').textContent = `${num(payments.filter(p => p.status !== 'aguardando').reduce((s,p) => s + Number(p.usdc_amount), 0))} USDC`;
   $('paid').textContent = money(payments.filter(p => p.status === 'pix_enviado').reduce((s,p) => s + Number(p.pix_amount), 0));
+  const totals = payments.reduce((sum, row) => {
+    const result = commission(row.usdc_amount, row.rate_brl, row.pix_amount);
+    if (result && row.status === 'pix_enviado') sum.earned += result.commissionCents;
+    if (result && row.status === 'recebido') sum.pending += result.commissionCents;
+    return sum;
+  }, { earned: 0, pending: 0 });
+  $('commission-earned').textContent = centsMoney(totals.earned);
+  $('commission-pending').textContent = centsMoney(totals.pending);
   const query = $('search').value.trim().toLocaleLowerCase('pt-BR');
   const container = $('rows'); container.replaceChildren();
   const filtered = payments.filter(p => `${p.client_name} ${p.telegram_handle || ''}`.toLocaleLowerCase('pt-BR').includes(query));
@@ -134,6 +169,11 @@ function render() {
     const detail = document.createElement('p'); detail.textContent = row.provisional
       ? `${num(row.usdc_amount)} USDC recebidos · Origem ${row.sender_address} · PIX e cotação pendentes${Number(row.usdc_amount) < 5 ? ' · Aguardar atingir o mínimo de 5 USDC' : ''}`
       : `${num(row.usdc_amount)} USDC · ${money(row.rate_brl)}/USDC · PIX ${money(row.pix_amount)} · cotação ${dt(row.exchange_at)}`;
+    const result = commission(row.usdc_amount, row.rate_brl, row.pix_amount);
+    const commissionLine = document.createElement('p'); commissionLine.className = 'commission-line';
+    commissionLine.textContent = result
+      ? `${row.status === 'pix_enviado' ? 'Comissão bruta realizada' : row.status === 'recebido' ? 'Comissão bruta pendente' : 'Comissão bruta estimada'}: ${centsMoney(result.commissionCents)} (${centsMoney(result.grossCents)} em crypto − ${centsMoney(result.paidCents)} de PIX)`
+      : 'Comissão pendente de cotação e valor do PIX.';
     const actions = document.createElement('div'); actions.className = 'actions';
     const editButton = document.createElement('button'); editButton.textContent = row.provisional ? 'Identificar e completar' : 'Editar'; editButton.className = 'quiet'; editButton.onclick = () => edit(row);
     const linkButton = document.createElement('button'); linkButton.textContent = 'Copiar link do usuário'; linkButton.className = 'quiet';
@@ -163,7 +203,7 @@ function render() {
       };
       actions.append(button, input);
     }
-    article.append(heading, detail, actions); container.append(article);
+    article.append(heading, detail, commissionLine, actions); container.append(article);
   }
 }
 $('login-form').onsubmit = async event => { event.preventDefault(); try { await post('/api/auth', { password: $('password').value }); $('password').value = ''; showApp(); await load(); } catch (error) { message('login-message', error.message); } };
