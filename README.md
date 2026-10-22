@@ -12,7 +12,19 @@ Antes de usar em produção:
 2. Configure no projeto Vercel as variáveis de ambiente `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, `ADMIN_PASSWORD` e `ADMIN_SESSION_SECRET`. Use uma senha forte e uma chave aleatória longa para a sessão. A secret key e a senha nunca devem ir para arquivos públicos ou para o navegador. A antiga variável `SUPABASE_SERVICE_ROLE_KEY` ainda é aceita pelo código como alternativa.
 3. Faça um novo deploy. Acesse `/controle-pagamentos`, entre com a senha, crie uma transação e copie o link individual para o usuário.
 
-O painel registra manualmente a cotação BRL por USDC na data/hora indicada e calcula `USDC × cotação × 0,80`, arredondado para centavos. O recebimento na Base e o envio do PIX são confirmados manualmente. Não há integração automática com carteira ou banco. Imagens JPG, PNG e WebP de até 2 MB podem ser anexadas a cada transação.
+O painel registra manualmente a cotação BRL por USDC na data/hora indicada e calcula `USDC × cotação × 0,80`, arredondado para centavos. Imagens JPG, PNG e WebP de até 2 MB podem ser anexadas a cada transação.
+
+### Detecção automática de USDC na Base
+
+A carteira de recebimento está fixada em `0x8f362ECd2DF3FBa1F3Ffd74CE73F4325965767cB`. O sistema aceita apenas USDC **nativo** na Base, contrato `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`. ETH e USDbC não são registrados. Antes de ativar:
+
+1. Execute novamente `supabase/payments.sql` no SQL Editor do projeto. Ele acrescenta a carteira de origem ao cadastro e cria a tabela de depósitos e as funções de associação.
+2. Crie um app **Base Mainnet** na Alchemy e configure `BASE_RPC_URL` no Vercel com a URL HTTPS RPC dele. Crie um webhook **Address Activity** para a Base Mainnet, monitorando a carteira acima, com destino `https://trainerobot.vercel.app/api/base-webhook`.
+3. No Vercel, configure `ALCHEMY_WEBHOOK_SIGNING_KEY` com a signing key desse webhook. Guarde essa chave só nas variáveis de ambiente. Faça um novo deploy para aplicar as variáveis.
+
+O webhook valida a assinatura da Alchemy, consulta o recibo diretamente na Base, verifica o contrato, destino e valor bruto em 6 casas, e registra uma vez cada evento `Transfer`. Se houver **uma única** transação aguardando com mesmo valor, mesma carteira de origem e mesma carteira de destino, o status muda automaticamente para **USDC recebido** e o hash aparece no histórico. Informe a carteira de origem no cadastro quando o usuário enviar de carteira própria. Se a origem for diferente, inclusive em envios de exchanges, ou houver mais de uma transação compatível, o depósito aparece em **Depósitos detectados na Base** para associação manual. O valor precisa ser exato. O PIX continua sendo enviado e marcado manualmente pelo administrador; não existe integração bancária.
+
+O registro ocorre após o recibo confirmar inclusão em bloco. Antes de enviar PIX, confira o depósito no explorador e respeite seu critério de confirmações. Webhooks podem falhar ou ser perdidos após as tentativas de entrega; confira periodicamente a carteira e a lista de depósitos. Depósitos anteriores à criação do webhook não são importados automaticamente.
 
 No painel, o botão **Excluir** remove uma transação após confirmação e tenta apagar também os comprovantes anexados. Ela desaparece da visão geral e do histórico do usuário.
 

@@ -2,8 +2,10 @@ const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(n) || 0);
 const num = n => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 6 }).format(Number(n) || 0);
 const dt = s => s ? new Date(s).toLocaleString('pt-BR') : '—';
-const fields = ['client_name','telegram_handle','pix_key','wallet_address','usdc_amount','rate_brl','exchange_at','status','crypto_tx_hash','notes'];
+const receiveAddress = '0x8f362ECd2DF3FBa1F3Ffd74CE73F4325965767cB';
+const fields = ['client_name','telegram_handle','pix_key','wallet_address','sender_address','usdc_amount','rate_brl','exchange_at','status','crypto_tx_hash','notes'];
 let payments = [];
+let deposits = [];
 
 async function api(path, options = {}) {
   const response = await fetch(path, { credentials: 'same-origin', cache: 'no-store', ...options });
@@ -19,6 +21,7 @@ function datetimeLocal(date = new Date()) {
 }
 function reset() {
   $('payment-form').reset(); $('id').value = ''; $('exchange_at').value = datetimeLocal();
+  $('wallet_address').value = receiveAddress;
   $('client_token').disabled = false; $('client_token').value = ''; $('client_name').readOnly = false;
   $('form-title').textContent = 'Nova transação'; message('form-message', ''); preview();
 }
@@ -27,6 +30,54 @@ function showApp() { $('login').hidden = true; $('app').hidden = false; $('logou
 function showLogin() { $('login').hidden = false; $('app').hidden = true; $('logout').hidden = true; }
 async function load() {
   const data = await api('/api/transactions'); payments = data.payments; $('demo-banner').hidden = !data.demo; renderClientOptions(); render();
+  await loadDeposits();
+}
+async function loadDeposits() {
+  if ($('demo-banner').hidden === false) {
+    deposits = []; message('deposit-message', 'A detecção automática não funciona no modo demonstração.'); renderDeposits(); return;
+  }
+  try {
+    const result = await api('/api/base-deposits'); deposits = result.deposits;
+    message('deposit-message', result.configured ? '' : 'Integração ainda inativa: configure BASE_RPC_URL e ALCHEMY_WEBHOOK_SIGNING_KEY no Vercel.');
+    renderDeposits();
+  } catch (error) { message('deposit-message', error.message); }
+}
+function renderDeposits() {
+  const container = $('deposits'); container.replaceChildren();
+  if (!deposits.length) { const p = document.createElement('p'); p.textContent = 'Nenhum depósito detectado ainda.'; container.append(p); return; }
+  for (const deposit of deposits) {
+    const row = document.createElement('article'); row.className = 'payment-row';
+    const heading = document.createElement('div'); heading.className = 'row-heading';
+    const title = document.createElement('strong'); title.textContent = `${num(deposit.usdc_amount)} USDC · ${dt(deposit.detected_at)}`;
+    const badge = document.createElement('span'); badge.className = 'badge';
+    const linked = payments.find(payment => payment.id === deposit.payment_id);
+    badge.textContent = linked ? `Associado a ${linked.client_name}` : deposit.payment_id ? 'Associado' : 'Sem associação';
+    heading.append(title, badge);
+    const detail = document.createElement('p');
+    detail.textContent = `Origem: ${deposit.from_address} · Bloco ${deposit.block_number}`;
+    const link = document.createElement('a'); link.className = 'action-link'; link.target = '_blank'; link.rel = 'noopener noreferrer';
+    link.href = `https://basescan.org/tx/${deposit.tx_hash}`; link.textContent = 'Ver na BaseScan';
+    const actions = document.createElement('div'); actions.className = 'actions'; actions.append(link);
+    if (!deposit.payment_id) {
+      const options = payments.filter(payment => payment.status === 'aguardando' &&
+        Number(payment.usdc_amount) === Number(deposit.usdc_amount) &&
+        payment.wallet_address.toLowerCase() === receiveAddress.toLowerCase());
+      if (options.length) {
+        const select = document.createElement('select'); select.setAttribute('aria-label', 'Transação para associar');
+        select.add(new Option('Escolha a transação', ''));
+        for (const option of options) select.add(new Option(`${option.client_name} · ${num(option.usdc_amount)} USDC`, option.id));
+        const button = document.createElement('button'); button.type = 'button'; button.textContent = 'Associar';
+        button.onclick = async () => {
+          if (!select.value) return;
+          button.disabled = true;
+          try { await post('/api/base-deposits', { deposit_id: deposit.id, payment_id: select.value }); await load(); }
+          catch (error) { message('deposit-message', error.message); button.disabled = false; }
+        };
+        actions.append(select, button);
+      }
+    }
+    row.append(heading, detail, actions); container.append(row);
+  }
 }
 function renderClientOptions() {
   const select = $('client_token'); const chosen = select.value; select.replaceChildren(new Option('Novo usuário', ''));
@@ -44,6 +95,7 @@ function edit(row) {
   $('id').value = row.id;
   $('client_token').value = row.client_token; $('client_token').disabled = true;
   for (const field of fields) $(field).value = field === 'exchange_at' ? datetimeLocal(new Date(row[field])) : row[field] ?? '';
+  $('wallet_address').value = receiveAddress;
   $('client_name').readOnly = true;
   $('form-title').textContent = `Editar · ${row.client_name}`; preview();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -104,6 +156,7 @@ $('payment-form').onsubmit = async event => { event.preventDefault();
   catch (error) { message('form-message', error.message); }
 };
 $('new').onclick = reset; $('search').oninput = render;
+$('refresh-deposits').onclick = () => load().catch(error => message('deposit-message', error.message));
 $('client_token').onchange = chooseClient;
 $('usdc_amount').oninput = preview; $('rate_brl').oninput = preview;
 reset();

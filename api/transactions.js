@@ -2,13 +2,14 @@ import { db, isAdmin, reply, sameOrigin, signedProofs, token } from '../lib/shar
 import { pixAmount } from '../lib/amount.js';
 import { demoMode, demoPayments, saveDemoPayments } from '../lib/demo.js';
 import { randomUUID } from 'node:crypto';
+import { BASE_RECEIVE_ADDRESS } from '../lib/base.js';
 
-const fields = 'id,client_name,telegram_handle,client_token,wallet_address,usdc_amount,rate_brl,exchange_at,fee_percent,pix_amount,pix_key,crypto_tx_hash,crypto_proof,pix_proof,status,notes,created_at,received_at,paid_at,view_token';
+const fields = 'id,client_name,telegram_handle,client_token,wallet_address,sender_address,usdc_amount,rate_brl,exchange_at,fee_percent,pix_amount,pix_key,crypto_tx_hash,crypto_proof,pix_proof,status,notes,created_at,received_at,paid_at,view_token';
 const statuses = ['aguardando', 'recebido', 'pix_enviado'];
 const validDate = value => typeof value === 'string' && !Number.isNaN(Date.parse(value));
 
 function publicRow(row) {
-  const { view_token, client_token, pix_key, notes, crypto_proof, pix_proof, ...visible } = row;
+  const { view_token, client_token, pix_key, notes, crypto_proof, pix_proof, sender_address, ...visible } = row;
   return visible;
 }
 
@@ -21,7 +22,8 @@ function clean(row) {
   return {
     client_name: String(row.client_name || '').trim().slice(0, 120),
     telegram_handle: String(row.telegram_handle || '').trim().slice(0, 64),
-    wallet_address: String(row.wallet_address || '').trim().slice(0, 100),
+    wallet_address: BASE_RECEIVE_ADDRESS,
+    sender_address: String(row.sender_address || '').trim().slice(0, 100),
     usdc_amount: String(row.usdc_amount || ''),
     rate_brl: String(row.rate_brl || ''),
     exchange_at: row.exchange_at,
@@ -119,7 +121,7 @@ export default async function handler(req, res) {
     const amount = pixAmount(item.usdc_amount, item.rate_brl);
     if (!item.client_name || amount === null || !validDate(item.exchange_at) || !statuses.includes(item.status) ||
         (item.telegram_handle && !/^@[A-Za-z0-9_]{1,32}$/.test(item.telegram_handle)) ||
-        (item.wallet_address && !/^0x[a-fA-F0-9]{40}$/.test(item.wallet_address)) ||
+        (item.sender_address && !/^0x[a-fA-F0-9]{40}$/.test(item.sender_address)) ||
         (item.crypto_tx_hash && !/^0x[a-fA-F0-9]{64}$/.test(item.crypto_tx_hash))) {
       return reply(res, 400, { error: 'Preencha nome, USDC, cotação, data e status válidos.' });
     }

@@ -8,6 +8,7 @@ create table if not exists public.payments (
   client_name text not null,
   telegram_handle text not null default '',
   wallet_address text not null default '',
+  sender_address text not null default '',
   usdc_amount numeric(18,6) not null check (usdc_amount > 0),
   rate_brl numeric(18,6) not null check (rate_brl > 0),
   exchange_at timestamptz not null,
@@ -27,11 +28,91 @@ create table if not exists public.payments (
 alter table public.payments enable row level security;
 alter table public.payments add column if not exists client_token text;
 alter table public.payments add column if not exists telegram_handle text not null default '';
+alter table public.payments add column if not exists sender_address text not null default '';
 update public.payments set client_token = view_token where client_token is null;
 alter table public.payments alter column client_token set not null;
 create index if not exists payments_client_token_idx on public.payments (client_token, created_at desc);
 revoke all on public.payments from anon, authenticated;
 grant all on public.payments to service_role;
+
+-- Depósitos USDC nativos recebidos na carteira Base configurada no servidor.
+create table if not exists public.base_deposits (
+  id uuid primary key default gen_random_uuid(),
+  tx_hash text not null,
+  log_index integer not null,
+  from_address text not null,
+  to_address text not null,
+  usdc_amount numeric(18,6) not null check (usdc_amount > 0),
+  block_number bigint not null,
+  payment_id uuid references public.payments(id) on delete set null,
+  detected_at timestamptz not null default now(),
+  unique (tx_hash, log_index)
+);
+create unique index if not exists base_deposits_payment_id_idx on public.base_deposits(payment_id) where payment_id is not null;
+create index if not exists base_deposits_detected_at_idx on public.base_deposits(detected_at desc);
+alter table public.base_deposits enable row level security;
+revoke all on public.base_deposits from anon, authenticated;
+grant all on public.base_deposits to service_role;
+
+create or replace function public.record_base_usdc_deposit(deposit jsonb)
+returns void language plpgsql security definer set search_path = public
+as $$
+declare
+  inserted_id uuid;
+  candidate_id uuid;
+  candidate_count integer;
+begin
+  insert into public.base_deposits(tx_hash, log_index, from_address, to_address, usdc_amount, block_number)
+  values (
+    lower(deposit->>'tx_hash'), (deposit->>'log_index')::integer,
+    lower(deposit->>'from_address'), lower(deposit->>'to_address'),
+    (deposit->>'usdc_amount')::numeric, (deposit->>'block_number')::bigint
+  ) on conflict (tx_hash, log_index) do nothing returning id into inserted_id;
+  if inserted_id is null then return; end if;
+
+  select count(*), min(id::text)::uuid into candidate_count, candidate_id
+  from public.payments
+  where status = 'aguardando'
+    and lower(sender_address) = lower(deposit->>'from_address')
+    and sender_address <> ''
+    and usdc_amount = (deposit->>'usdc_amount')::numeric
+    and lower(wallet_address) = lower(deposit->>'to_address');
+
+  if candidate_count = 1 then
+    update public.payments set status = 'recebido', received_at = now(),
+      crypto_tx_hash = lower(deposit->>'tx_hash')
+    where id = candidate_id and status = 'aguardando';
+    if found then
+      update public.base_deposits set payment_id = candidate_id where id = inserted_id;
+    end if;
+  end if;
+end;
+$$;
+revoke all on function public.record_base_usdc_deposit(jsonb) from public, anon, authenticated;
+grant execute on function public.record_base_usdc_deposit(jsonb) to service_role;
+
+create or replace function public.assign_base_usdc_deposit(deposit_id uuid, target_payment_id uuid)
+returns void language plpgsql security definer set search_path = public
+as $$
+declare
+  incoming public.base_deposits%rowtype;
+  payment public.payments%rowtype;
+begin
+  select * into incoming from public.base_deposits where id = deposit_id for update;
+  if not found or incoming.payment_id is not null then raise exception 'Depósito indisponível.'; end if;
+  select * into payment from public.payments where id = target_payment_id for update;
+  if not found or payment.status <> 'aguardando' or
+     payment.usdc_amount <> incoming.usdc_amount or
+     lower(payment.wallet_address) <> incoming.to_address then
+    raise exception 'Transação incompatível com o depósito.';
+  end if;
+  update public.payments set status = 'recebido', received_at = now(),
+    crypto_tx_hash = incoming.tx_hash where id = target_payment_id;
+  update public.base_deposits set payment_id = target_payment_id where id = deposit_id;
+end;
+$$;
+revoke all on function public.assign_base_usdc_deposit(uuid, uuid) from public, anon, authenticated;
+grant execute on function public.assign_base_usdc_deposit(uuid, uuid) to service_role;
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('payment-proofs', 'payment-proofs', false, 2000000, array['image/jpeg','image/png','image/webp'])

@@ -18,7 +18,8 @@
           <label>Nome ou identificação do usuário<input id="client_name" maxlength="120" placeholder="Ex.: Maria ou @fulano" required></label>
           <label>Usuário do Telegram (opcional)<input id="telegram_handle" maxlength="33" placeholder="@fulano" autocomplete="off"></label>
           <label>Chave PIX (visível só para você)<input id="pix_key" maxlength="180" autocomplete="off"></label>
-          <label class="wide">Sua carteira de recebimento na rede Base<input id="wallet_address" maxlength="100" placeholder="0x..."></label>
+          <label class="wide">Sua carteira de recebimento na rede Base<input id="wallet_address" maxlength="42" readonly></label>
+          <label class="wide">Carteira de origem do usuário (opcional)<input id="sender_address" maxlength="42" placeholder="0x..." autocomplete="off"><small>Com esta carteira e o valor exato, o depósito pode ser associado automaticamente. Envios de exchanges podem usar outra carteira de origem.</small></label>
           <label>Valor recebido em USDC<input id="usdc_amount" type="number" min="0.000001" max="1000000" step="0.000001" required></label>
           <label>Cotação da transação · R$ por USDC<input id="rate_brl" type="number" min="0.000001" max="1000" step="0.000001" required></label>
           <label>Data e hora da cotação<input id="exchange_at" type="datetime-local" required></label>
@@ -27,6 +28,7 @@
           <label class="wide">Observações internas<textarea id="notes" maxlength="1000" rows="3"></textarea></label>
         </div><p class="calculation">PIX previsto: <strong id="preview">R$ 0,00</strong> <small>USDC × cotação × 80%. A cotação é informada por você e fica registrada.</small></p><button type="submit">Salvar transação</button><p id="form-message" class="message" role="status"></p></form>
       </section>
+      <section class="card"><div class="section-head"><h2>Depósitos detectados na Base</h2><button id="refresh-deposits" type="button" class="quiet">Atualizar</button></div><p id="deposit-message" class="message" role="status"></p><div id="deposits" class="rows"></div></section>
       <section class="card"><div class="section-head"><h2>Transações</h2><input id="search" aria-label="Buscar usuário" placeholder="Buscar usuário"></div><p id="list-message" class="message" role="status"></p><div id="rows" class="rows"></div></section>
     </div>
   </main><script src="/controle-pagamentos/painel.js" defer></script>
