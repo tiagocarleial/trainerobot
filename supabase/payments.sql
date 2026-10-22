@@ -89,7 +89,11 @@ begin
 
   if candidate_count = 1 then
     update public.payments set status = 'recebido', received_at = (deposit->>'block_time')::timestamptz,
-      crypto_tx_hash = lower(deposit->>'tx_hash')
+      crypto_tx_hash = lower(deposit->>'tx_hash'),
+      notes = case when (deposit->>'usdc_amount')::numeric < 5
+        then case when position('Abaixo do mínimo de 5 USDC.' in notes) > 0 then notes
+          else concat_ws(E'\n', nullif(notes, ''), 'Abaixo do mínimo de 5 USDC. Não enviar o PIX até atingir o mínimo.') end
+        else notes end
     where id = candidate_id and status = 'aguardando';
     if found then
       update public.base_deposits set payment_id = candidate_id where id = inserted_id;
@@ -101,13 +105,16 @@ begin
   insert into public.payments (
     view_token, client_token, client_name, wallet_address, sender_address,
     usdc_amount, rate_brl, exchange_at, pix_amount, pix_manual, provisional,
-    crypto_tx_hash, status, received_at, created_at
+    crypto_tx_hash, status, notes, received_at, created_at
   ) values (
     rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
     rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
     'A identificar', lower(deposit->>'to_address'), lower(deposit->>'from_address'),
     (deposit->>'usdc_amount')::numeric, null, null, null, false, true,
-    lower(deposit->>'tx_hash'), 'recebido', (deposit->>'block_time')::timestamptz,
+    lower(deposit->>'tx_hash'), 'recebido',
+    case when (deposit->>'usdc_amount')::numeric < 5
+      then 'Abaixo do mínimo de 5 USDC. Não enviar o PIX até atingir o mínimo.' else '' end,
+    (deposit->>'block_time')::timestamptz,
     (deposit->>'block_time')::timestamptz
   ) returning id into candidate_id;
   update public.base_deposits set payment_id = candidate_id where id = inserted_id;

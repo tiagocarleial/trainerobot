@@ -23,7 +23,7 @@ function reset() {
   $('payment-form').reset(); $('id').value = ''; $('exchange_at').value = datetimeLocal();
   $('wallet_address').value = receiveAddress;
   for (const id of ['sender_address','usdc_amount','crypto_tx_hash']) $(id).readOnly = false;
-  $('status').options[0].disabled = false;
+  $('status').options[0].disabled = false; $('status').options[2].disabled = false;
   $('client_token').disabled = false; $('client_token').value = ''; $('client_name').readOnly = false;
   $('form-title').textContent = 'Nova transação'; message('form-message', ''); preview();
 }
@@ -56,7 +56,7 @@ function renderDeposits() {
     const title = document.createElement('strong'); title.textContent = `${num(deposit.usdc_amount)} USDC · ${dt(deposit.block_time)}`;
     const badge = document.createElement('span'); badge.className = 'badge';
     const linked = payments.find(payment => payment.id === deposit.payment_id);
-    badge.textContent = linked?.provisional ? 'A identificar' : linked ? `Associado a ${linked.client_name}` : deposit.payment_id ? 'Associado' : 'Sem associação';
+    badge.textContent = linked && Number(linked.usdc_amount) < 5 ? 'Abaixo do mínimo de 5 USDC' : linked?.provisional ? 'A identificar' : linked ? `Associado a ${linked.client_name}` : deposit.payment_id ? 'Associado' : 'Sem associação';
     heading.append(title, badge);
     const detail = document.createElement('p');
     detail.textContent = `Origem: ${deposit.from_address} · Bloco ${deposit.block_number}`;
@@ -111,6 +111,7 @@ function edit(row) {
   const onchain = deposits.some(deposit => deposit.payment_id === row.id);
   for (const id of ['sender_address','usdc_amount','crypto_tx_hash']) $(id).readOnly = onchain;
   $('status').options[0].disabled = onchain;
+  $('status').options[2].disabled = Number(row.usdc_amount) < 5;
   $('form-title').textContent = row.provisional ? 'Identificar depósito recebido' : `Editar · ${row.client_name}`; preview();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -126,10 +127,12 @@ function render() {
     const article = document.createElement('article'); article.className = 'payment-row';
     const heading = document.createElement('div'); heading.className = 'row-heading';
     const title = document.createElement('strong'); title.textContent = row.telegram_handle ? `${row.client_name} · ${row.telegram_handle}` : row.client_name;
-    const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = row.provisional ? 'Identificar depósito' : { aguardando:'Aguardando USDC', recebido:'USDC recebido', pix_enviado:'PIX enviado' }[row.status];
+    const badge = document.createElement('span'); badge.className = 'badge'; badge.textContent = Number(row.usdc_amount) < 5
+      ? `Abaixo do mínimo · ${num(row.usdc_amount)} de 5 USDC`
+      : row.provisional ? 'Identificar depósito' : { aguardando:'Aguardando USDC', recebido:'USDC recebido', pix_enviado:'PIX enviado' }[row.status];
     heading.append(title, badge);
     const detail = document.createElement('p'); detail.textContent = row.provisional
-      ? `${num(row.usdc_amount)} USDC recebidos · Origem ${row.sender_address} · PIX e cotação pendentes`
+      ? `${num(row.usdc_amount)} USDC recebidos · Origem ${row.sender_address} · PIX e cotação pendentes${Number(row.usdc_amount) < 5 ? ' · Aguardar atingir o mínimo de 5 USDC' : ''}`
       : `${num(row.usdc_amount)} USDC · ${money(row.rate_brl)}/USDC · PIX ${money(row.pix_amount)} · cotação ${dt(row.exchange_at)}`;
     const actions = document.createElement('div'); actions.className = 'actions';
     const editButton = document.createElement('button'); editButton.textContent = row.provisional ? 'Identificar e completar' : 'Editar'; editButton.className = 'quiet'; editButton.onclick = () => edit(row);

@@ -6,6 +6,8 @@ import { BASE_RECEIVE_ADDRESS } from '../lib/base.js';
 
 const fields = 'id,client_name,telegram_handle,client_token,wallet_address,sender_address,usdc_amount,rate_brl,exchange_at,fee_percent,pix_amount,pix_manual,provisional,pix_key,crypto_tx_hash,crypto_proof,pix_proof,status,notes,created_at,received_at,paid_at,view_token';
 const statuses = ['aguardando', 'recebido', 'pix_enviado'];
+const MIN_USDC = 5;
+const minimumNote = 'Abaixo do mínimo de 5 USDC. Não enviar o PIX até atingir o mínimo.';
 const validDate = value => typeof value === 'string' && !Number.isNaN(Date.parse(value));
 const manualPix = value => {
   const text = String(value ?? '').trim();
@@ -152,6 +154,8 @@ export default async function handler(req, res) {
     }
     const amount = pixAmount(item.usdc_amount, item.rate_brl);
     const override = manualPix(req.body?.pix_amount_override);
+    if (item.status === 'pix_enviado' && Number(item.usdc_amount) < MIN_USDC)
+      return reply(res, 400, { error: 'O PIX não pode ser marcado como enviado: o mínimo é 5 USDC.' });
     if (!item.client_name || amount === null || !validDate(item.exchange_at) || !statuses.includes(item.status) ||
         Number.isNaN(override) ||
         (item.telegram_handle && !/^@[A-Za-z0-9_]{1,32}$/.test(item.telegram_handle)) ||
@@ -159,7 +163,10 @@ export default async function handler(req, res) {
         (item.crypto_tx_hash && !/^0x[a-fA-F0-9]{64}$/.test(item.crypto_tx_hash))) {
       return reply(res, 400, { error: 'Preencha nome, USDC, cotação, data e status válidos.' });
     }
-    const payload = { ...item, fee_percent: 20, pix_amount: override ?? amount, pix_manual: override !== null, provisional: false };
+    const noteLines = item.notes.split('\n').filter(line => line && line !== minimumNote);
+    if (Number(item.usdc_amount) < MIN_USDC) noteLines.push(minimumNote);
+    const notes = noteLines.join('\n');
+    const payload = { ...item, notes, fee_percent: 20, pix_amount: override ?? amount, pix_manual: override !== null, provisional: false };
     const requestedClient = String(req.body?.client_token || '');
     if (requestedClient && !/^[A-Za-z0-9_-]{43}$/.test(requestedClient)) return reply(res, 400, { error: 'Usuário inválido.' });
     if (demo) {
