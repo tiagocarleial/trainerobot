@@ -86,6 +86,33 @@ export default async function handler(req, res) {
       }
       return reply(res, 200, { payments: rows });
     }
+    if (req.method === 'DELETE') {
+      if (!sameOrigin(req)) return reply(res, 403, { error: 'Origem inválida.' });
+      const id = String(req.query?.id || '');
+      if (!/^[0-9a-f-]{36}$/i.test(id)) return reply(res, 400, { error: 'ID inválido.' });
+      if (demo) {
+        const rows = demoPayments();
+        const index = rows.findIndex(row => row.id === id);
+        if (index < 0) return reply(res, 404, { error: 'Transação não encontrada.' });
+        rows.splice(index, 1);
+        saveDemoPayments(rows);
+        return reply(res, 200, { deleted: true });
+      }
+      const { data: old, error: readError } = await client.from('payments').select('crypto_proof,pix_proof').eq('id', id).maybeSingle();
+      if (readError) throw readError;
+      if (!old) return reply(res, 404, { error: 'Transação não encontrada.' });
+      const removed = await client.from('payments').delete().eq('id', id);
+      if (removed.error) throw removed.error;
+      const paths = [old.crypto_proof, old.pix_proof].filter(Boolean);
+      if (paths.length) {
+        const files = await client.storage.from('payment-proofs').remove(paths);
+        if (files.error) {
+          console.error('Falha ao remover comprovantes da transação:', id, files.error);
+          return reply(res, 200, { deleted: true, warning: 'Transação excluída, mas os arquivos antigos não puderam ser removidos do armazenamento.' });
+        }
+      }
+      return reply(res, 200, { deleted: true });
+    }
     if (req.method !== 'POST') return reply(res, 405, { error: 'Método não permitido.' });
     if (!sameOrigin(req)) return reply(res, 403, { error: 'Origem inválida.' });
     const item = clean(req.body || {});

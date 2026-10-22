@@ -5,3 +5,4 @@
 .info-line strong{overflow-wrap:anywhere}
 @media(max-width:650px){.history-card .row-heading{align-items:flex-start;flex-direction:column}}
 .intro{color:#60736b;margin:-8px 0 22px}.table-scroll{overflow-x:auto}.ledger{width:100%;border-collapse:collapse;min-width:790px}.ledger th,.ledger td{text-align:left;padding:13px 10px;border-bottom:1px solid #e0ebe5;white-space:nowrap}.ledger th{color:#53665e;font-size:.8rem}.ledger td{font-size:.9rem}.ledger a{color:#176b54;font-weight:650}#summary{font-weight:700;margin:0 0 12px}
+.danger{background:#fff0ed;color:#a73028}.danger:hover{background:#ffe0da}

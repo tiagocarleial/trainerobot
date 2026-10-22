@@ -68,7 +68,18 @@ function render() {
     const linkButton = document.createElement('button'); linkButton.textContent = 'Copiar link do usuário'; linkButton.className = 'quiet';
     linkButton.onclick = async () => { await navigator.clipboard.writeText(`${location.origin}/pagamento?client=${row.client_token}`); linkButton.textContent = 'Link copiado'; };
     const viewLink = document.createElement('a'); viewLink.className = 'action-link'; viewLink.href = `/pagamento?client=${row.client_token}`; viewLink.target = '_blank'; viewLink.rel = 'noopener noreferrer'; viewLink.textContent = 'Visualizar histórico';
-    actions.append(editButton, linkButton, viewLink);
+    const deleteButton = document.createElement('button'); deleteButton.type = 'button'; deleteButton.className = 'danger'; deleteButton.textContent = 'Excluir';
+    deleteButton.onclick = async () => {
+      if (!confirm(`Excluir a transação de ${row.client_name} (${num(row.usdc_amount)} USDC)? Os comprovantes anexados também serão apagados.`)) return;
+      deleteButton.disabled = true;
+      try {
+        const result = await api(`/api/transactions?id=${encodeURIComponent(row.id)}`, { method: 'DELETE' });
+        if ($('id').value === row.id) reset();
+        await load();
+        message('list-message', result.warning || 'Transação excluída.');
+      } catch (error) { alert(error.message); deleteButton.disabled = false; }
+    };
+    actions.append(editButton, linkButton, viewLink, deleteButton);
     for (const [kind, label] of [['crypto','Anexar comprovante USDC'],['pix','Anexar comprovante PIX']]) {
       const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/jpeg,image/png,image/webp'; input.hidden = true;
       const button = document.createElement('button'); button.type = 'button'; button.className = 'quiet'; button.textContent = row[`${kind}_proof`] ? `Trocar ${label.toLowerCase()}` : label; button.onclick = () => input.click();

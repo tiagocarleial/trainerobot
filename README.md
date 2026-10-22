@@ -14,6 +14,8 @@ Antes de usar em produção:
 
 O painel registra manualmente a cotação BRL por USDC na data/hora indicada e calcula `USDC × cotação × 0,80`, arredondado para centavos. O recebimento na Base e o envio do PIX são confirmados manualmente. Não há integração automática com carteira ou banco. Imagens JPG, PNG e WebP de até 2 MB podem ser anexadas a cada transação.
 
+No painel, o botão **Excluir** remove uma transação após confirmação e tenta apagar também os comprovantes anexados. Ela desaparece da visão geral e do histórico do usuário.
+
 Para visualizar localmente sem Supabase, crie `.env.local` com `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET` e `PAYMENTS_DEMO_MODE=1`, depois execute `npm run dev`. O modo de demonstração guarda os registros em `.dev-payments.json`, arquivo ignorado pelo Git. Ele só é ativado fora do ambiente de produção.
 
 Landing page em português sobre o app Hub (gravação de tarefas domésticas para treinar robôs de IA), com lista de 84 tarefas traduzidas, programa de indicações e simulador de ganhos.
