@@ -54,10 +54,13 @@ export default async function handler(req, res) {
       const tx = await rpc('eth_getTransactionReceipt', [hash]);
       if (!tx) throw new Error('Recibo ainda indisponível.');
       if (tx.status !== '0x1') continue;
+      const block = await rpc('eth_getBlockByNumber', [tx.blockNumber, false]);
+      if (!block || block.hash?.toLowerCase() !== tx.blockHash?.toLowerCase()) throw new Error('Bloco do recibo mudou.');
+      const blockTime = new Date(Number(BigInt(block.timestamp)) * 1000).toISOString();
       for (const log of tx.logs || []) {
         const transfer = parseTransferLog(log);
         if (!transfer) continue;
-        const { error } = await client.rpc('record_base_usdc_deposit', { deposit: transfer });
+        const { error } = await client.rpc('record_base_usdc_deposit', { deposit: { ...transfer, block_time: blockTime } });
         if (error) throw error;
         processed++;
       }

@@ -22,6 +22,7 @@
           <label class="wide">Carteira de origem do usuário (opcional)<input id="sender_address" maxlength="42" placeholder="0x..." autocomplete="off"><small>Com esta carteira e o valor exato, o depósito pode ser associado automaticamente. Envios de exchanges podem usar outra carteira de origem.</small></label>
           <label>Valor recebido em USDC<input id="usdc_amount" type="number" min="0.000001" max="1000000" step="0.000001" required></label>
           <label>Cotação da transação · R$ por USDC<input id="rate_brl" type="number" min="0.000001" max="1000" step="0.000001" required></label>
+          <label>Valor do PIX em reais (ajuste opcional)<input id="pix_amount_override" type="number" min="0" step="0.01" placeholder="Calculado automaticamente"></label>
           <label>Data e hora da cotação<input id="exchange_at" type="datetime-local" required></label>
           <label>Status<select id="status"><option value="aguardando">Aguardando recebimento</option><option value="recebido">USDC recebido</option><option value="pix_enviado">PIX enviado</option></select></label>
           <label class="wide">Hash da transação na Base<input id="crypto_tx_hash" maxlength="100" placeholder="0x..."></label>

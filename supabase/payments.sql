@@ -10,10 +10,12 @@ create table if not exists public.payments (
   wallet_address text not null default '',
   sender_address text not null default '',
   usdc_amount numeric(18,6) not null check (usdc_amount > 0),
-  rate_brl numeric(18,6) not null check (rate_brl > 0),
-  exchange_at timestamptz not null,
+  rate_brl numeric(18,6) check (rate_brl > 0),
+  exchange_at timestamptz,
   fee_percent numeric(5,2) not null default 20,
-  pix_amount numeric(18,2) not null check (pix_amount >= 0),
+  pix_amount numeric(18,2) check (pix_amount >= 0),
+  pix_manual boolean not null default false,
+  provisional boolean not null default false,
   pix_key text not null default '',
   crypto_tx_hash text not null default '',
   crypto_proof text,
@@ -29,6 +31,11 @@ alter table public.payments enable row level security;
 alter table public.payments add column if not exists client_token text;
 alter table public.payments add column if not exists telegram_handle text not null default '';
 alter table public.payments add column if not exists sender_address text not null default '';
+alter table public.payments add column if not exists pix_manual boolean not null default false;
+alter table public.payments add column if not exists provisional boolean not null default false;
+alter table public.payments alter column rate_brl drop not null;
+alter table public.payments alter column exchange_at drop not null;
+alter table public.payments alter column pix_amount drop not null;
 update public.payments set client_token = view_token where client_token is null;
 alter table public.payments alter column client_token set not null;
 create index if not exists payments_client_token_idx on public.payments (client_token, created_at desc);
@@ -44,10 +51,12 @@ create table if not exists public.base_deposits (
   to_address text not null,
   usdc_amount numeric(18,6) not null check (usdc_amount > 0),
   block_number bigint not null,
+  block_time timestamptz not null default now(),
   payment_id uuid references public.payments(id) on delete set null,
   detected_at timestamptz not null default now(),
   unique (tx_hash, log_index)
 );
+alter table public.base_deposits add column if not exists block_time timestamptz not null default now();
 create unique index if not exists base_deposits_payment_id_idx on public.base_deposits(payment_id) where payment_id is not null;
 create index if not exists base_deposits_detected_at_idx on public.base_deposits(detected_at desc);
 alter table public.base_deposits enable row level security;
@@ -62,11 +71,11 @@ declare
   candidate_id uuid;
   candidate_count integer;
 begin
-  insert into public.base_deposits(tx_hash, log_index, from_address, to_address, usdc_amount, block_number)
+  insert into public.base_deposits(tx_hash, log_index, from_address, to_address, usdc_amount, block_number, block_time)
   values (
     lower(deposit->>'tx_hash'), (deposit->>'log_index')::integer,
     lower(deposit->>'from_address'), lower(deposit->>'to_address'),
-    (deposit->>'usdc_amount')::numeric, (deposit->>'block_number')::bigint
+    (deposit->>'usdc_amount')::numeric, (deposit->>'block_number')::bigint, (deposit->>'block_time')::timestamptz
   ) on conflict (tx_hash, log_index) do nothing returning id into inserted_id;
   if inserted_id is null then return; end if;
 
@@ -79,13 +88,29 @@ begin
     and lower(wallet_address) = lower(deposit->>'to_address');
 
   if candidate_count = 1 then
-    update public.payments set status = 'recebido', received_at = now(),
+    update public.payments set status = 'recebido', received_at = (deposit->>'block_time')::timestamptz,
       crypto_tx_hash = lower(deposit->>'tx_hash')
     where id = candidate_id and status = 'aguardando';
     if found then
       update public.base_deposits set payment_id = candidate_id where id = inserted_id;
+      return;
     end if;
   end if;
+
+  -- Sem cliente identificado, o depósito vira uma transação privada provisória.
+  insert into public.payments (
+    view_token, client_token, client_name, wallet_address, sender_address,
+    usdc_amount, rate_brl, exchange_at, pix_amount, pix_manual, provisional,
+    crypto_tx_hash, status, received_at, created_at
+  ) values (
+    rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
+    rtrim(translate(encode(gen_random_bytes(32), 'base64'), '+/', '-_'), '='),
+    'A identificar', lower(deposit->>'to_address'), lower(deposit->>'from_address'),
+    (deposit->>'usdc_amount')::numeric, null, null, null, false, true,
+    lower(deposit->>'tx_hash'), 'recebido', (deposit->>'block_time')::timestamptz,
+    (deposit->>'block_time')::timestamptz
+  ) returning id into candidate_id;
+  update public.base_deposits set payment_id = candidate_id where id = inserted_id;
 end;
 $$;
 revoke all on function public.record_base_usdc_deposit(jsonb) from public, anon, authenticated;
@@ -106,7 +131,7 @@ begin
      lower(payment.wallet_address) <> incoming.to_address then
     raise exception 'Transação incompatível com o depósito.';
   end if;
-  update public.payments set status = 'recebido', received_at = now(),
+  update public.payments set status = 'recebido', received_at = incoming.block_time,
     crypto_tx_hash = incoming.tx_hash where id = target_payment_id;
   update public.base_deposits set payment_id = target_payment_id where id = deposit_id;
 end;

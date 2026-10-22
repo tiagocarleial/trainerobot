@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       const deposits = [];
       for (let from = 0; ; from += 1000) {
         const { data, error } = await client.from('base_deposits')
-          .select('id,tx_hash,log_index,from_address,usdc_amount,block_number,detected_at,payment_id')
+          .select('id,tx_hash,log_index,from_address,usdc_amount,block_number,block_time,detected_at,payment_id')
           .order('detected_at', { ascending: false }).range(from, from + 999);
         if (error) throw error;
         deposits.push(...data);

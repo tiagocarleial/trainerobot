@@ -19,7 +19,7 @@ function transaction(payment, proofs) {
   heading.append(title, badge); card.append(heading);
   line(card, 'Cotação registrada', `${money(payment.rate_brl)} por USDC`);
   line(card, 'Data e hora da cotação', dt(payment.exchange_at));
-  line(card, 'Desconto aplicado', `${num(payment.fee_percent)}%`);
+  line(card, payment.pix_manual ? 'Valor do PIX ajustado pelo responsável' : 'Desconto aplicado', payment.pix_manual ? 'Sim' : `${num(payment.fee_percent)}%`);
   line(card, 'Valor do PIX', money(payment.pix_amount));
   line(card, 'USDC confirmado em', dt(payment.received_at));
   line(card, 'PIX enviado em', dt(payment.paid_at));
@@ -61,7 +61,7 @@ async function start() {
     box.append(count);
     for (const payment of payments) box.append(transaction(payment, proofs[payment.id]));
     const foot = document.createElement('p'); foot.className = 'footnote';
-    foot.textContent = 'Guarde este link para acompanhar novas transações. Os valores e o recebimento são confirmados manualmente pelo responsável.';
+    foot.textContent = 'Guarde este link para acompanhar novas transações. Depósitos na Base podem ser detectados automaticamente; o PIX é enviado e registrado pelo responsável.';
     box.append(foot);
   } catch (error) { box.textContent = error.message; }
 }
