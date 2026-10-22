@@ -15,6 +15,7 @@ Antes de usar em produção:
 O painel registra manualmente a cotação BRL por USDC na data/hora indicada e calcula `USDC × cotação × 0,80`, arredondado para centavos. Imagens JPG, PNG e WebP de até 2 MB podem ser anexadas a cada transação.
 
 O painel também mostra a comissão bruta de cada operação: `USDC × cotação registrada − PIX registrado`, arredondando o valor convertido para centavos. O resumo separa as comissões de PIX enviados das comissões previstas para depósitos recebidos com PIX pendente. Ajustes manuais do PIX entram na conta; depósitos provisórios sem cotação ficam fora dos totais. Custos de rede e conversão não são descontados.
+Os valores em reais aparecem junto do equivalente estimado em dólares, calculado pela cotação de cada transação antes da soma dos totais.
 
 ### Detecção automática de USDC na Base
 

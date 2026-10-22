@@ -1,5 +1,6 @@
 const $ = id => document.getElementById(id);
 const money = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(n) || 0);
+const dollars = n => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'USD' }).format(Number(n) || 0);
 const num = n => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 6 }).format(Number(n) || 0);
 const dt = s => s ? new Date(s).toLocaleString('pt-BR') : '—';
 const receiveAddress = '0x8f362ECd2DF3FBa1F3Ffd74CE73F4325965767cB';
@@ -20,9 +21,14 @@ function commission(usdc, rate, pix) {
   if (amount === null || quote === null || pixCents === null || amount <= 0n || quote <= 0n) return null;
   const grossCents = Number((amount * quote + 5000000000n) / 10000000000n);
   const paidCents = Number(pixCents);
-  return { grossCents, paidCents, commissionCents: grossCents - paidCents };
+  const grossUsdCents = Number((amount + 5000n) / 10000n);
+  const paidUsdCents = Number((pixCents * 1000000n + quote / 2n) / quote);
+  return { grossCents, paidCents, commissionCents: grossCents - paidCents,
+    grossUsdCents, paidUsdCents, commissionUsdCents: grossUsdCents - paidUsdCents };
 }
 const centsMoney = cents => money(cents / 100);
+const centsDollars = cents => dollars(cents / 100);
+const bothCurrencies = (brlCents, usdCents) => `${centsMoney(brlCents)} (${centsDollars(usdCents)})`;
 function defaultPix(usdc, rate) {
   const amount = decimalUnits(usdc, 6);
   const quote = decimalUnits(rate, 6);
@@ -53,10 +59,10 @@ function reset() {
 function preview() {
   const override = $('pix_amount_override').value;
   const pix = override === '' ? defaultPix($('usdc_amount').value, $('rate_brl').value) : Number(override);
-  $('preview').textContent = money(pix);
   const result = commission($('usdc_amount').value, $('rate_brl').value, String(pix));
-  $('preview-gross').textContent = result ? centsMoney(result.grossCents) : '—';
-  $('preview-commission').textContent = result ? centsMoney(result.commissionCents) : '—';
+  $('preview').textContent = result ? bothCurrencies(result.paidCents, result.paidUsdCents) : money(pix);
+  $('preview-gross').textContent = result ? bothCurrencies(result.grossCents, result.grossUsdCents) : '—';
+  $('preview-commission').textContent = result ? bothCurrencies(result.commissionCents, result.commissionUsdCents) : '—';
 }
 function showApp() { $('login').hidden = true; $('app').hidden = false; $('logout').hidden = false; }
 function showLogin() { $('login').hidden = false; $('app').hidden = true; $('logout').hidden = true; }
@@ -145,15 +151,20 @@ function edit(row) {
 function render() {
   $('total').textContent = payments.length;
   $('received').textContent = `${num(payments.filter(p => p.status !== 'aguardando').reduce((s,p) => s + Number(p.usdc_amount), 0))} USDC`;
-  $('paid').textContent = money(payments.filter(p => p.status === 'pix_enviado').reduce((s,p) => s + Number(p.pix_amount), 0));
+  const paidTotals = payments.filter(p => p.status === 'pix_enviado').reduce((sum, row) => {
+    sum.brl += Number(decimalUnits(row.pix_amount, 2) || 0n);
+    sum.usd += commission(row.usdc_amount, row.rate_brl, row.pix_amount)?.paidUsdCents || 0;
+    return sum;
+  }, { brl: 0, usd: 0 });
+  $('paid').textContent = bothCurrencies(paidTotals.brl, paidTotals.usd);
   const totals = payments.reduce((sum, row) => {
     const result = commission(row.usdc_amount, row.rate_brl, row.pix_amount);
-    if (result && row.status === 'pix_enviado') sum.earned += result.commissionCents;
-    if (result && row.status === 'recebido') sum.pending += result.commissionCents;
+    if (result && row.status === 'pix_enviado') { sum.earned += result.commissionCents; sum.earnedUsd += result.commissionUsdCents; }
+    if (result && row.status === 'recebido') { sum.pending += result.commissionCents; sum.pendingUsd += result.commissionUsdCents; }
     return sum;
-  }, { earned: 0, pending: 0 });
-  $('commission-earned').textContent = centsMoney(totals.earned);
-  $('commission-pending').textContent = centsMoney(totals.pending);
+  }, { earned: 0, earnedUsd: 0, pending: 0, pendingUsd: 0 });
+  $('commission-earned').textContent = bothCurrencies(totals.earned, totals.earnedUsd);
+  $('commission-pending').textContent = bothCurrencies(totals.pending, totals.pendingUsd);
   const query = $('search').value.trim().toLocaleLowerCase('pt-BR');
   const container = $('rows'); container.replaceChildren();
   const filtered = payments.filter(p => `${p.client_name} ${p.telegram_handle || ''}`.toLocaleLowerCase('pt-BR').includes(query));
@@ -170,9 +181,10 @@ function render() {
       ? `${num(row.usdc_amount)} USDC recebidos · Origem ${row.sender_address} · PIX e cotação pendentes${Number(row.usdc_amount) < 5 ? ' · Aguardar atingir o mínimo de 5 USDC' : ''}`
       : `${num(row.usdc_amount)} USDC · ${money(row.rate_brl)}/USDC · PIX ${money(row.pix_amount)} · cotação ${dt(row.exchange_at)}`;
     const result = commission(row.usdc_amount, row.rate_brl, row.pix_amount);
+    if (result && !row.provisional) detail.textContent = `${num(row.usdc_amount)} USDC · ${money(row.rate_brl)}/USDC · PIX ${bothCurrencies(result.paidCents, result.paidUsdCents)} · cotação ${dt(row.exchange_at)}`;
     const commissionLine = document.createElement('p'); commissionLine.className = 'commission-line';
     commissionLine.textContent = result
-      ? `${row.status === 'pix_enviado' ? 'Comissão bruta realizada' : row.status === 'recebido' ? 'Comissão bruta pendente' : 'Comissão bruta estimada'}: ${centsMoney(result.commissionCents)} (${centsMoney(result.grossCents)} em crypto − ${centsMoney(result.paidCents)} de PIX)`
+      ? `${row.status === 'pix_enviado' ? 'Comissão bruta realizada' : row.status === 'recebido' ? 'Comissão bruta pendente' : 'Comissão bruta estimada'}: ${bothCurrencies(result.commissionCents, result.commissionUsdCents)} (${centsMoney(result.grossCents)} em crypto − ${centsMoney(result.paidCents)} de PIX)`
       : 'Comissão pendente de cotação e valor do PIX.';
     const actions = document.createElement('div'); actions.className = 'actions';
     const editButton = document.createElement('button'); editButton.textContent = row.provisional ? 'Identificar e completar' : 'Editar'; editButton.className = 'quiet'; editButton.onclick = () => edit(row);
